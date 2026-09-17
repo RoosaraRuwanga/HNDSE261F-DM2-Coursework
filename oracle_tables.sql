@@ -96,3 +96,88 @@ INSERT INTO PAYMENT VALUES (3, 3, 2000.00, DATE '2026-09-14');
 INSERT INTO MAINTENANCE VALUES (1, 3, DATE '2026-09-05', 'Engine Service', 5000.00, DATE '2026-12-05');
 INSERT INTO MAINTENANCE VALUES (2, 1, DATE '2026-08-20', 'Tire Change', 1500.00, DATE '2027-02-20');
 
+-- reports using PSQL and SYS_REFCURSOR, 
+-- jasper reports too complicated to setup rn, though i think this is what we want either way??
+CREATE OR REPLACE PROCEDURE report_popular_routes(p_cursor OUT SYS_REFCURSOR) AS
+BEGIN
+    OPEN p_cursor FOR
+        SELECT r.start_location, r.destination, COUNT(t.trip_id) AS trip_count
+        FROM ROUTE r
+        JOIN TRIP t ON r.route_id = t.route_id
+        JOIN TICKET tk ON t.trip_id = tk.trip_id
+        GROUP BY r.start_location, r.destination
+        ORDER BY trip_count DESC;
+END;
+
+CREATE OR REPLACE PROCEDURE report_revenue(p_start_date IN DATE, p_end_date IN DATE, p_cursor OUT SYS_REFCURSOR) AS
+BEGIN
+    OPEN p_cursor FOR
+        SELECT NVL(SUM(amount), 0) AS total_revenue
+        FROM PAYMENT
+        WHERE payment_date BETWEEN p_start_date AND p_end_date;
+END;
+
+CREATE OR REPLACE PROCEDURE report_passenger_history(p_passenger_id IN NUMBER, p_cursor OUT SYS_REFCURSOR) AS
+BEGIN
+    OPEN p_cursor FOR
+        SELECT t.trip_id, r.start_location, r.destination, t.trip_date, tk.status
+        FROM TICKET tk
+        JOIN TRIP t ON tk.trip_id = t.trip_id
+        JOIN ROUTE r ON t.route_id = r.route_id
+        WHERE tk.passenger_id = p_passenger_id
+        ORDER BY t.trip_date;
+END;
+
+CREATE OR REPLACE PROCEDURE report_maintenance_due(p_cursor OUT SYS_REFCURSOR) AS
+BEGIN
+    OPEN p_cursor FOR
+        SELECT v.vehicle_id, v.license_number, m.next_due_date
+        FROM VEHICLE v
+        JOIN MAINTENANCE m ON v.vehicle_id = m.vehicle_id
+        WHERE m.next_due_date <= SYSDATE + 30
+        ORDER BY m.next_due_date;
+END;
+
+CREATE OR REPLACE PROCEDURE report_driver_activity(p_cursor OUT SYS_REFCURSOR) AS
+BEGIN
+    OPEN p_cursor FOR
+        SELECT d.driver_name, COUNT(t.trip_id) AS total_trips
+        FROM DRIVER d
+        JOIN TRIP t ON d.driver_id = t.driver_id
+        WHERE t.status = 'Completed'
+        GROUP BY d.driver_name
+        ORDER BY total_trips DESC;
+END;
+
+-- testing code
+VAR c REFCURSOR;
+EXEC report_popular_routes(:c);
+PRINT c;
+
+-- trigger to prevent overbooking (vehicle does not have enough seats for trip)
+CREATE OR REPLACE TRIGGER trg_prevent_overbooking
+BEFORE INSERT ON TICKET
+FOR EACH ROW
+DECLARE
+    seats_available NUMBER;
+    seats_booked NUMBER;
+BEGIN
+    -- seat capacity
+    SELECT vehicle.available_seats INTO vehicle_seats_available
+    FROM VEHICLE vehicle
+    JOIN TRIP trip ON vehicle.vehicle_id = trip.vehicle_id
+    WHERE trip.trip_id = :NEW.trip_id;
+
+    -- tickets booked on this trip
+    SELECT COUNT(*) INTO seats_booked
+    FROM TICKET
+    WHERE trip_id = :NEW.trip_id;
+
+    IF seats_available >= seats_booked THEN
+        RAISE_APPLICATION_ERROR(-20001, 'Booking failed: trip is fully booked.');
+    END IF;
+-- incorrect trip id given
+EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+        RAISE_APPLICATION_ERROR(-20002, 'Booking failed: invalid trip ID.');
+END;
