@@ -11,7 +11,24 @@
     <rowspec value="top:4dlu:noGrow"/>
     <rowspec value="center:max(d;4px):noGrow"/>
     <rowspec value="top:4dlu:noGrow"/>
-    <rowspec value="center:d:grow"/>
+    <rowspec value="center:max(d;4px):noGrow"/>
+    <rowspec value="top:4dlu:noGrow"/>
+    <rowspec value="center:max(d;4px):noGrow"/>
+    <rowspec value="top:4dlu:noGrow"/>
+    <rowspec value="center:max(d;4px):noGrow"/>
+    <rowspec value="top:4dlu:noGrow"/>
+    <rowspec value="center:max(d;4px):noGrow"/>
+    <rowspec value="top:4dlu:noGrow"/>
+    <rowspec value="center:max(d;4px):noGrow"/>
+    <rowspec value="top:4dlu:noGrow"/>
+    <rowspec value="top:4dlu:noGrow"/>
+    <rowspec value="center:max(d;4px):noGrow"/>
+    <rowspec value="top:4dlu:noGrow"/>
+    <rowspec value="center:max(d;4px):noGrow"/>
+    <rowspec value="top:4dlu:noGrow"/>
+    <rowspec value="center:max(d;4px):noGrow"/>
+    <rowspec value="top:4dlu:noGrow"/>
+    <rowspec value="center:max(d;4px):noGrow"/>
     <colspec value="fill:d:grow"/>
     <colspec value="left:20dlu:noGrow"/>
     <colspec value="fill:d:grow"/>
@@ -72,33 +89,9 @@
           <text value="Passenger History"/>
         </properties>
       </component>
-      <component id="f37fd" class="javax.swing.JButton" binding="btnReport_Driver">
-        <constraints>
-          <grid row="6" column="2" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
-          <forms/>
-        </constraints>
-        <properties>
-          <background color="-5425857"/>
-          <font name="Bahnschrift" size="14" style="1"/>
-          <foreground color="-7973"/>
-          <text value="Driver Activity"/>
-        </properties>
-      </component>
-      <component id="6a27b" class="javax.swing.JButton" binding="btnReport_Maintenance">
-        <constraints>
-          <grid row="8" column="2" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
-          <forms/>
-        </constraints>
-        <properties>
-          <background color="-5425857"/>
-          <font name="Bahnschrift" size="14" style="1"/>
-          <foreground color="-7973"/>
-          <text value="Maintenance Due"/>
-        </properties>
-      </component>
       <scrollpane id="f9aa8" binding="scroll">
         <constraints>
-          <grid row="1" column="0" row-span="10" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+          <grid row="1" column="0" row-span="27" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
           <forms defaultalign-horz="false" defaultalign-vert="false"/>
         </constraints>
         <properties/>
@@ -110,6 +103,100 @@
           </component>
         </children>
       </scrollpane>
+      <component id="74257" class="javax.swing.JLabel">
+        <constraints>
+          <grid row="14" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+          <forms/>
+        </constraints>
+        <properties>
+          <font name="Bahnschrift" size="16" style="0"/>
+          <foreground color="-12183780"/>
+          <text value="Passenger ID&#10;"/>
+        </properties>
+      </component>
+      <component id="912b8" class="javax.swing.JTextField" binding="txtStartDate">
+        <constraints>
+          <grid row="23" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+            <preferred-size width="150" height="-1"/>
+          </grid>
+          <forms defaultalign-horz="false"/>
+        </constraints>
+        <properties/>
+      </component>
+      <component id="d3d47" class="javax.swing.JLabel">
+        <constraints>
+          <grid row="21" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+          <forms/>
+        </constraints>
+        <properties>
+          <font name="Bahnschrift" size="16" style="0"/>
+          <foreground color="-12183780"/>
+          <text value="Start Date (Year-Month-Day)"/>
+        </properties>
+      </component>
+      <component id="b161a" class="javax.swing.JTextField" binding="txtPassengerID">
+        <constraints>
+          <grid row="16" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+            <preferred-size width="150" height="-1"/>
+          </grid>
+          <forms defaultalign-horz="false"/>
+        </constraints>
+        <properties/>
+      </component>
+      <component id="f3224" class="javax.swing.JLabel">
+        <constraints>
+          <grid row="25" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+          <forms/>
+        </constraints>
+        <properties>
+          <font name="Bahnschrift" size="16" style="0"/>
+          <foreground color="-12183780"/>
+          <text value="End Date (Year-Month-Day)"/>
+        </properties>
+      </component>
+      <component id="cee68" class="javax.swing.JTextField" binding="txtEndDate">
+        <constraints>
+          <grid row="27" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+            <preferred-size width="150" height="-1"/>
+          </grid>
+          <forms defaultalign-horz="false"/>
+        </constraints>
+        <properties/>
+      </component>
+      <component id="dcc8d" class="javax.swing.JLabel">
+        <constraints>
+          <grid row="18" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+          <forms/>
+        </constraints>
+        <properties>
+          <font name="Bahnschrift" size="18" style="1"/>
+          <foreground color="-12183780"/>
+          <text value="Revenue Report Options:"/>
+        </properties>
+      </component>
+      <component id="445db" class="javax.swing.JLabel">
+        <constraints>
+          <grid row="12" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+          <forms/>
+        </constraints>
+        <properties>
+          <font name="Bahnschrift" size="18" style="1"/>
+          <foreground color="-12183780"/>
+          <text value="Passenger History Report Options:"/>
+        </properties>
+      </component>
+      <component id="6a27b" class="javax.swing.JButton" binding="btnReport_Maintenance">
+        <constraints>
+          <grid row="6" column="2" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+          <forms/>
+        </constraints>
+        <properties>
+          <background color="-5425857"/>
+          <font name="Bahnschrift" size="14" style="1"/>
+          <foreground color="-7973"/>
+          <text value="Maintenance Due"/>
+        </properties>
+      </component>
     </children>
   </grid>
 </form>

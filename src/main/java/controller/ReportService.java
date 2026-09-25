@@ -105,7 +105,10 @@ public class ReportService {
         return model;
     }
 
-    // REPORT 5 Driver Activity
+    // note to other team members, you might need to use this?
+    // to whoever is working on driver panel, just copy and paste then uncomment (remove /* and */) it if youre displaying it in a table
+
+    /*
     public DefaultTableModel getDriverActivity() throws SQLException {
         DefaultTableModel model = new DefaultTableModel(
                 new String[]{"Driver Name", "Total Trips"}, 0);
@@ -127,4 +130,5 @@ public class ReportService {
         }
         return model;
     }
+    */
 }

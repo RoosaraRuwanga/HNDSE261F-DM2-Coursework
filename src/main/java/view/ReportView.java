@@ -1,7 +1,5 @@
 package view;
 
-import com.jgoodies.forms.layout.FormLayout;
-import com.jgoodies.forms.factories.CC;
 import javax.swing.*;
 import java.sql.Date;
 import java.sql.SQLException;
@@ -14,9 +12,11 @@ public class ReportView extends JFrame {
     private JButton btnReport_Revenue;
     private JButton btnReport_PassengerHistory;
     private JButton btnReport_Maintenance;
-    private JButton btnReport_Driver;
     private JTable tblReport;
     private JScrollPane scroll;
+    private JTextField txtStartDate;
+    private JTextField txtPassengerID;
+    private JTextField txtEndDate;
     private ReportService reportService = new ReportService();
 
     public ReportView() {
@@ -43,13 +43,41 @@ public class ReportView extends JFrame {
             }
         });
 
-        btnReport_Driver.addActionListener(e -> {
+        btnReport_PassengerHistory.addActionListener(e -> {
             try {
-                tblReport.setModel(reportService.getDriverActivity());
+                // Using trim here to cut off blank spaces, note to other members to PLEASE use this
+                String input = txtPassengerID.getText().trim();
+                if (input.isEmpty()) {
+                    JOptionPane.showMessageDialog(this, "Please enter a Passenger ID.");
+                    return;
+                }
+
+                int passengerId = Integer.parseInt(input);
+                tblReport.setModel(reportService.getPassengerHistory(passengerId));
+
             } catch (SQLException ex) {
                 JOptionPane.showMessageDialog(this, "Error loading report: " + ex.getMessage());
             }
         });
+
+        btnReport_Revenue.addActionListener(e -> {
+            try {
+                String startInput = txtStartDate.getText().trim();
+                String endInput = txtEndDate.getText().trim();
+
+                if (startInput.isEmpty() || endInput.isEmpty()) {
+                    JOptionPane.showMessageDialog(this, "Please enter both start and end dates.");
+                    return;
+                }
+
+                Date startDate = Date.valueOf(startInput);
+                Date endDate = Date.valueOf(endInput);
+                tblReport.setModel(reportService.getRevenue(startDate, endDate));
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(this, "Error loading report: " + ex.getMessage());
+            }
+        });
+
     }
 
     public static void main(String[] args){
