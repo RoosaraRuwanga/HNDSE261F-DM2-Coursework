@@ -155,27 +155,31 @@ EXEC report_popular_routes(:c);
 PRINT c;
 
 -- trigger to prevent overbooking (vehicle does not have enough seats for trip)
+-- Minor error on the last trigger was that:
+-- seats_available >= seats_booked shows that there's still room
+      -- where as we want to prevent overbooking
+      -- So I replaced that with seats_booked >= seats_available
 CREATE OR REPLACE TRIGGER trg_prevent_overbooking
 BEFORE INSERT ON TICKET
 FOR EACH ROW
 DECLARE
-    seats_available NUMBER;
+seats_available NUMBER;
     seats_booked NUMBER;
 BEGIN
-    -- seat capacity
-    SELECT vehicle.available_seats INTO vehicle_seats_available
-    FROM VEHICLE vehicle
-    JOIN TRIP trip ON vehicle.vehicle_id = trip.vehicle_id
-    WHERE trip.trip_id = :NEW.trip_id;
+    -- seat capacity for the vehicle assigned to this trip
+SELECT v.available_seats INTO seats_available
+FROM VEHICLE v
+         JOIN TRIP t ON v.vehicle_id = t.vehicle_id
+WHERE t.trip_id = :NEW.trip_id;
 
-    -- tickets booked on this trip
-    SELECT COUNT(*) INTO seats_booked
-    FROM TICKET
-    WHERE trip_id = :NEW.trip_id;
+-- tickets already booked on this trip
+SELECT COUNT(*) INTO seats_booked
+FROM TICKET
+WHERE trip_id = :NEW.trip_id;
 
-    IF seats_available >= seats_booked THEN
+IF seats_booked >= seats_available THEN
         RAISE_APPLICATION_ERROR(-20001, 'Booking failed: trip is fully booked.');
-    END IF;
+END IF;
 -- incorrect trip id given
 EXCEPTION
     WHEN NO_DATA_FOUND THEN
