@@ -21,21 +21,30 @@ public class SmartMove {
     private final CardLayout cards = new CardLayout();
 
     public SmartMove() {
-        contentPanel.removeAll();            // clears the "not wired up yet" label
+        contentPanel.removeAll();
         contentPanel.setLayout(cards);
 
-        // Swap each placeholder for the real view as you build it
-        register(Vehicles,    "Vehicles",    placeholder("Vehicle Management"));
-        register(Drivers,     "Drivers",     placeholder("Driver Management"));
-        register(Maintance,   "Maintenance", placeholder("Maintenance"));
-        register(Routes,      "Routes",      placeholder("Routes"));
-        register(Trips,       "Trips",       placeholder("Trips"));
-        register(Passengers,  "Passengers",  placeholder("Passengers"));
-        register(Tickets,     "Tickets",     placeholder("Tickets"));
-        register(Payments,    "Payments",    placeholder("Payments"));
-        register(Feedbacks,   "Feedback",    placeholder("Feedback"));
+        // Real views
+        PassengerView passengerView = new PassengerView();
+        register(Passengers, "Passengers", passengerView, passengerView::refresh);
 
-        cards.show(contentPanel, "Vehicles");   // default screen on startup
+        RouteView routeView = new RouteView();                       // CHANGED
+        register(Routes, "Routes", routeView, routeView::refresh);   // CHANGED
+
+        TripView tripView = new TripView();
+
+        FeedbackView feedbackView = new FeedbackView();
+        feedbackView.dispose();
+        register(Feedbacks, "Feedback", (JComponent) feedbackView.getContentPane());
+
+        // Placeholders until these views are built
+        register(Vehicles,  "Vehicles",    placeholder("Vehicle Management"));
+        register(Drivers,   "Drivers",     placeholder("Driver Management"));
+        register(Maintance, "Maintenance", placeholder("Maintenance"));
+        register(Tickets,   "Tickets",     placeholder("Tickets"));
+        register(Payments,  "Payments",    placeholder("Payments"));
+
+        cards.show(contentPanel, "Routes");                          // CHANGED: start on Routes
     }
 
     public JPanel getRootPanel() {
@@ -43,8 +52,15 @@ public class SmartMove {
     }
 
     private void register(JButton button, String name, JComponent view) {
+        register(button, name, view, null);
+    }
+
+    private void register(JButton button, String name, JComponent view, Runnable onShow) {
         contentPanel.add(view, name);
-        button.addActionListener(e -> cards.show(contentPanel, name));
+        button.addActionListener(e -> {
+            if (onShow != null) onShow.run();
+            cards.show(contentPanel, name);
+        });
     }
 
     private JPanel placeholder(String title) {

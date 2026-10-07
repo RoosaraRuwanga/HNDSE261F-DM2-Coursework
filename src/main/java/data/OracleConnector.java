@@ -3,9 +3,9 @@ package data;
 import java.sql.*;
 
 public class OracleConnector {
-    private static final String URL = "jdbc:oracle:thin:@localhost:1521/XEPDB1";
-    private static final String USER = "system";
-    private static final String PASS = "sys123";
+    private static final String URL = "jdbc:oracle:thin:@10.247.66.112:1521:XE";
+    private static final String USER = "SYSTEM";
+    private static final String PASS = "274123";
 
     public static Connection getConnection() throws SQLException {
         return DriverManager.getConnection(URL, USER, PASS);
