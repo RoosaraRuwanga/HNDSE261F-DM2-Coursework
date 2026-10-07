@@ -3,7 +3,7 @@ package view;
 import javax.swing.*;
 import java.sql.Date;
 import java.sql.SQLException;
-import controller.ReportService;
+import controller.ReportController;
 
 public class ReportView extends JFrame {
     private JPanel MainPanel;
@@ -17,7 +17,7 @@ public class ReportView extends JFrame {
     private JTextField txtStartDate;
     private JTextField txtPassengerID;
     private JTextField txtEndDate;
-    private ReportService reportService = new ReportService();
+    private ReportController reportController = new ReportController();
 
     public ReportView() {
         setTitle("SmartMove Transport Solutions");
@@ -29,7 +29,7 @@ public class ReportView extends JFrame {
 
         btnReport_PopRoutes.addActionListener(e -> {
             try {
-                tblReport.setModel(reportService.getPopularRoutes());
+                tblReport.setModel(reportController.getPopularRoutes());
             } catch (SQLException ex) {
                 JOptionPane.showMessageDialog(this, "Error loading report: " + ex.getMessage());
             }
@@ -37,7 +37,7 @@ public class ReportView extends JFrame {
 
         btnReport_Maintenance.addActionListener(e -> {
             try {
-                tblReport.setModel(reportService.getMaintenanceDue());
+                tblReport.setModel(reportController.getMaintenanceDue());
             } catch (SQLException ex) {
                 JOptionPane.showMessageDialog(this, "Error loading report: " + ex.getMessage());
             }
@@ -53,7 +53,7 @@ public class ReportView extends JFrame {
                 }
 
                 int passengerId = Integer.parseInt(input);
-                tblReport.setModel(reportService.getPassengerHistory(passengerId));
+                tblReport.setModel(reportController.getPassengerHistory(passengerId));
 
             } catch (SQLException ex) {
                 JOptionPane.showMessageDialog(this, "Error loading report: " + ex.getMessage());
@@ -72,7 +72,7 @@ public class ReportView extends JFrame {
 
                 Date startDate = Date.valueOf(startInput);
                 Date endDate = Date.valueOf(endInput);
-                tblReport.setModel(reportService.getRevenue(startDate, endDate));
+                tblReport.setModel(reportController.getRevenue(startDate, endDate));
             } catch (SQLException ex) {
                 JOptionPane.showMessageDialog(this, "Error loading report: " + ex.getMessage());
             }

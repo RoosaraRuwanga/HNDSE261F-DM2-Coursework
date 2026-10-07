@@ -6,7 +6,7 @@ import javax.swing.table.DefaultTableModel;
 import data.OracleConnector;
 import oracle.jdbc.OracleTypes;
 
-public class ReportService {
+public class ReportController {
 
     // REPORT 1 Popular Routes
     public DefaultTableModel getPopularRoutes() throws SQLException {
