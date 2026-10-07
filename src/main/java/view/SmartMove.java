@@ -1,94 +1,71 @@
 package view;
 
-import controller.PassengerController;
-import controller.RouteController;
-import controller.TripController;
-
 import javax.swing.*;
 import java.awt.*;
 
-public class SmartMove extends JFrame {
-    private CardLayout cardLayout;
+public class SmartMove {
+    private JPanel panel1;
+    private JPanel navigationPanel;
     private JPanel contentPanel;
-    private JButton button1;
+    private JButton Trips;
+    private JButton Vehicles;
+    private JButton Drivers;
+    private JButton Maintance;
+    private JButton Routes;
+    private JButton Feedbacks;
+    private JButton Passengers;
+    private JButton Tickets;
+    private JButton Payments;
+    private JLabel SamartMove;
+
+    private final CardLayout cards = new CardLayout();
 
     public SmartMove() {
-        setTitle("SmartMove Transport Solutions");
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setSize(1280, 720);
-        setLayout(new BorderLayout());
+        contentPanel.removeAll();            // clears the "not wired up yet" label
+        contentPanel.setLayout(cards);
 
-        cardLayout = new CardLayout();
-        contentPanel = new JPanel(cardLayout);
+        // Swap each placeholder for the real view as you build it
+        register(Vehicles,    "Vehicles",    placeholder("Vehicle Management"));
+        register(Drivers,     "Drivers",     placeholder("Driver Management"));
+        register(Maintance,   "Maintenance", placeholder("Maintenance"));
+        register(Routes,      "Routes",      placeholder("Routes"));
+        register(Trips,       "Trips",       placeholder("Trips"));
+        register(Passengers,  "Passengers",  placeholder("Passengers"));
+        register(Tickets,     "Tickets",     placeholder("Tickets"));
+        register(Payments,    "Payments",    placeholder("Payments"));
+        register(Feedbacks,   "Feedback",    placeholder("Feedback"));
 
-        contentPanel.add(placeholder("Vehicle Management"), "Vehicles");
-        contentPanel.add(placeholder("Driver Management"), "Drivers");
-        contentPanel.add(placeholder("Maintenance Management"), "Maintenance");
-
-        RouteView routeView = new RouteView();
-        new RouteController(routeView);
-        contentPanel.add(routeView, "Routes");
-
-        TripView tripView = new TripView();
-        new TripController(tripView);
-        contentPanel.add(tripView, "Trips");
-
-        PassengerView passengerView = new PassengerView();
-        new PassengerController(passengerView);
-        contentPanel.add(passengerView, "Passengers");
-
-        contentPanel.add(placeholder("Ticket Booking"), "Tickets");
-        contentPanel.add(placeholder("Payment Processing"), "Payments");
-        contentPanel.add(placeholder("Feedback & Review"), "Feedback");
-
-        add(buildSidebar(), BorderLayout.WEST);
-        add(contentPanel, BorderLayout.CENTER);
-
-        cardLayout.show(contentPanel, "Vehicles"); // whatever screen should open first
-
-        setLocationRelativeTo(null);
-        setVisible(true);
+        cards.show(contentPanel, "Vehicles");   // default screen on startup
     }
 
-    private JPanel buildSidebar() {
-        JPanel sidebar = new JPanel();
-        sidebar.setLayout(new BoxLayout(sidebar, BoxLayout.Y_AXIS));
-        sidebar.setPreferredSize(new Dimension(160, 0));
-        sidebar.setBorder(BorderFactory.createEmptyBorder(12, 10, 10, 10));
-
-        JLabel brand = new JLabel("SmartMove");
-        brand.setAlignmentX(Component.LEFT_ALIGNMENT);
-        sidebar.add(brand);
-        sidebar.add(Box.createVerticalStrut(14));
-
-        sidebar.add(navButton("Vehicles"));
-        sidebar.add(navButton("Drivers"));
-        sidebar.add(navButton("Maintenance"));
-        sidebar.add(navButton("Routes"));
-        sidebar.add(navButton("Trips"));
-        sidebar.add(navButton("Passengers"));
-        sidebar.add(navButton("Tickets"));
-        sidebar.add(navButton("Payments"));
-        sidebar.add(navButton("Feedback"));
-
-        return sidebar;
+    public JPanel getRootPanel() {
+        return panel1;
     }
 
-    private JButton navButton(String cardName) {
-        JButton button = new JButton(cardName);
-        button.setAlignmentX(Component.LEFT_ALIGNMENT);
-        button.setMaximumSize(new Dimension(Integer.MAX_VALUE, 30));
-        button.addActionListener(e -> cardLayout.show(contentPanel, cardName));
-        return button;
+    private void register(JButton button, String name, JComponent view) {
+        contentPanel.add(view, name);
+        button.addActionListener(e -> cards.show(contentPanel, name));
     }
 
-    private JPanel placeholder(String moduleName) {
-        JPanel panel = new JPanel(new BorderLayout());
-        panel.add(new JLabel(moduleName + " — not wired up yet", SwingConstants.CENTER), BorderLayout.CENTER);
-        return panel;
+    private JPanel placeholder(String title) {
+        JPanel p = new JPanel(new GridBagLayout());
+        p.setBackground(Color.decode("#FFE0DB"));
+        p.add(new JLabel(title + " (not built yet)"));
+        return p;
+    }
+
+    private void createUIComponents() {
+        // TODO: place custom component creation code here
     }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(SmartMove::new);
+        SwingUtilities.invokeLater(() -> {
+            JFrame frame = new JFrame("SmartMove Transport Solutions");
+            frame.setContentPane(new SmartMove().getRootPanel());
+            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            frame.setSize(1200, 700);
+            frame.setLocationRelativeTo(null);
+            frame.setVisible(true);
+        });
     }
 }
