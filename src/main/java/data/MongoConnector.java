@@ -11,6 +11,6 @@ public class MongoConnector {
         if (client == null) {
             client = MongoClients.create("mongodb://localhost:27017");
         }
-        return client.getDatabase("your_db_name");
+        return client.getDatabase("smartmove");
     }
 }

@@ -2,6 +2,7 @@ package view;
 
 import controller.FeedbackController;
 import javax.swing.*;
+import java.sql.SQLException;
 
 public class FeedbackView extends JFrame{
     private JPanel MainPanel;
@@ -13,6 +14,13 @@ public class FeedbackView extends JFrame{
     private JSpinner spnRating;
     private JTextField txtComment;
     private JButton btnSubmit;
+    private JTextField txtSearch;
+    private JSpinner spnRouteSearch;
+    private JButton btnSearch;
+    private JButton btnSortRoute;
+    private JButton btnSortHighest;
+    private JScrollPane scroll;
+    private JTable tblFeedback;
     private FeedbackController feedbackService = new FeedbackController();
 
     public FeedbackView() {
@@ -52,7 +60,28 @@ public class FeedbackView extends JFrame{
                 JOptionPane.showMessageDialog(this, "Feedback submitted successfully!");
             } catch (NumberFormatException ex) {
                 JOptionPane.showMessageDialog(this, "Please enter valid numbers for ID/rating fields.");
+            } catch (IllegalArgumentException ex) {
+                JOptionPane.showMessageDialog(this, ex.getMessage());
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(this, "Error checking database: " + ex.getMessage());
             }
+        });
+        btnSearch.addActionListener(e -> {
+            String keyword = txtSearch.getText().trim();
+            tblFeedback.setModel(feedbackService.searchFeedbackByKeyword(keyword));
+        });
+
+        btnSortRoute.addActionListener(e -> {
+            try {
+                int routeId = (int) spnRouteSearch.getValue();
+                tblFeedback.setModel(feedbackService.getFeedbackByRoute(routeId));
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(this, "Please enter a valid numeric Route ID.");
+            }
+        });
+
+        btnSortHighest.addActionListener(e -> {
+            tblFeedback.setModel(feedbackService.getHighestRated());
         });
 
     }

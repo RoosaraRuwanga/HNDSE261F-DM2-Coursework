@@ -1,17 +1,33 @@
 package controller;
 import com.mongodb.client.*;
 import data.MongoConnector;
+import data.OracleConnector;
 import org.bson.Document;
 import javax.swing.table.DefaultTableModel;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 
-// TODO: check if theres a way to make sure the ids in the feedback section are consistent with oracle
 public class FeedbackController {
 
-    public void submitFeedback(int passengerId, int routeId, int vehicleId, int driverId, int rating, String comment) {
+    public void submitFeedback(int passengerId, int routeId, int vehicleId, int driverId, int rating, String comment) throws SQLException {
         MongoCollection<Document> collection = MongoConnector.getDatabase().getCollection("feedback");
+
+        // safety check
+        if (!OracleConnector.value_exists("Passenger", "passenger_id", passengerId)) {
+            throw new IllegalArgumentException("Passenger ID " + passengerId + " does not exist.");
+        }
+        if (!OracleConnector.value_exists("Route", "route_id", routeId)) {
+            throw new IllegalArgumentException("Route ID " + routeId + " does not exist.");
+        }
+        if (!OracleConnector.value_exists("Vehicle", "vehicle_id", vehicleId)) {
+            throw new IllegalArgumentException("Vehicle ID " + vehicleId + " does not exist.");
+        }
+        if (!OracleConnector.value_exists("Driver", "driver_id", driverId)) {
+            throw new IllegalArgumentException("Driver ID " + driverId + " does not exist.");
+        }
+
 
         // probably should space this out more later like i do for my hobby stuff, i just want this to work first of all
         Document feedback =
