@@ -32,6 +32,7 @@ public class SmartMove {
         register(Routes, "Routes", routeView, routeView::refresh);   // CHANGED
 
         TripView tripView = new TripView();
+        register(Trips, "Trips", tripView, tripView::refresh);
 
         FeedbackView feedbackView = new FeedbackView();
         feedbackView.dispose();

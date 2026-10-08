@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="view.AddPassengerDialog">
-  <grid id="27dc6" binding="rootPanel" layout-manager="GridLayoutManager" row-count="8" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="6">
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="view.AddTripDialog">
+  <grid id="27dc6" binding="RootPanel" layout-manager="GridLayoutManager" row-count="12" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="6">
     <margin top="24" left="24" bottom="24" right="24"/>
     <constraints>
-      <xy x="20" y="20" width="500" height="400"/>
+      <xy x="20" y="20" width="500" height="470"/>
     </constraints>
     <properties>
       <background color="-7973"/>
     </properties>
     <border type="none"/>
     <children>
-      <component id="e8d37" class="javax.swing.JLabel">
+      <component id="70616" class="javax.swing.JLabel">
         <constraints>
           <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
@@ -20,64 +20,58 @@
           <foreground color="-12183780"/>
           <horizontalAlignment value="2"/>
           <horizontalTextPosition value="2"/>
-          <text value="Add passenger"/>
+          <text value="Add Trip"/>
         </properties>
       </component>
-      <component id="65be8" class="javax.swing.JLabel">
+      <component id="dde66" class="javax.swing.JLabel">
         <constraints>
           <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
           <font name="Bahnschrift" style="0"/>
           <foreground color="-12183780"/>
-          <text value="Passenger name"/>
+          <text value="Route"/>
         </properties>
       </component>
-      <component id="ec29e" class="javax.swing.JTextField" binding="txtName">
+      <component id="fd8fd" class="javax.swing.JComboBox" binding="cmbRoute">
         <constraints>
-          <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
-            <preferred-size width="292" height="36"/>
-          </grid>
+          <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
           <background color="-773"/>
           <enabled value="true"/>
-          <foreground color="-15132132"/>
         </properties>
       </component>
-      <component id="1012c" class="javax.swing.JLabel">
+      <component id="f565c" class="javax.swing.JLabel">
         <constraints>
           <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
           <font name="Bahnschrift" style="0"/>
           <foreground color="-12183780"/>
-          <text value="Contact"/>
+          <text value="Vehicle"/>
         </properties>
       </component>
-      <component id="feeff" class="javax.swing.JTextField" binding="txtContact">
+      <component id="bfe1e" class="javax.swing.JComboBox" binding="cmbVehicle">
         <constraints>
-          <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
-            <preferred-size width="292" height="36"/>
-          </grid>
+          <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
           <background color="-773"/>
           <enabled value="true"/>
-          <foreground color="-15132132"/>
         </properties>
       </component>
-      <component id="a52cb" class="javax.swing.JLabel">
+      <component id="dc125" class="javax.swing.JLabel">
         <constraints>
           <grid row="5" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
           <font name="Bahnschrift" style="0"/>
           <foreground color="-12183780"/>
-          <text value="Status"/>
+          <text value="Driver"/>
         </properties>
       </component>
-      <component id="33c" class="javax.swing.JComboBox" binding="cmbStatus">
+      <component id="76ad2" class="javax.swing.JComboBox" binding="cmbDriver">
         <constraints>
           <grid row="6" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
         </constraints>
@@ -86,10 +80,51 @@
           <enabled value="true"/>
         </properties>
       </component>
-      <grid id="eba0a" layout-manager="GridLayoutManager" row-count="2" column-count="4" same-size-horizontally="false" same-size-vertically="false" hgap="10" vgap="-1">
+      <component id="7423b" class="javax.swing.JLabel">
+        <constraints>
+          <grid row="7" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <font name="Bahnschrift" style="0"/>
+          <foreground color="-12183780"/>
+          <text value="Trip Date"/>
+        </properties>
+      </component>
+      <component id="bc291" class="javax.swing.JTextField" binding="txtTripDate">
+        <constraints>
+          <grid row="8" column="0" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+            <preferred-size width="292" height="36"/>
+          </grid>
+        </constraints>
+        <properties>
+          <background color="-773"/>
+          <enabled value="true"/>
+          <foreground color="-15132132"/>
+        </properties>
+      </component>
+      <component id="fe971" class="javax.swing.JLabel">
+        <constraints>
+          <grid row="9" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <font name="Bahnschrift" style="0"/>
+          <foreground color="-12183780"/>
+          <text value="Status"/>
+        </properties>
+      </component>
+      <component id="ae659" class="javax.swing.JComboBox" binding="cmbStatus">
+        <constraints>
+          <grid row="10" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <background color="-773"/>
+          <enabled value="true"/>
+        </properties>
+      </component>
+      <grid id="3e272" layout-manager="GridLayoutManager" row-count="2" column-count="4" same-size-horizontally="false" same-size-vertically="false" hgap="10" vgap="-1">
         <margin top="0" left="0" bottom="0" right="0"/>
         <constraints>
-          <grid row="7" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false">
+          <grid row="11" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false">
             <preferred-size width="-1" height="44"/>
           </grid>
         </constraints>
@@ -98,7 +133,7 @@
         </properties>
         <border type="none"/>
         <children>
-          <component id="72f28" class="javax.swing.JButton" binding="cancelButton" default-binding="true">
+          <component id="523dd" class="javax.swing.JButton" binding="cancelButton" default-binding="true">
             <constraints>
               <grid row="1" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false">
                 <preferred-size width="90" height="36"/>
@@ -108,22 +143,22 @@
               <text value="Cancel"/>
             </properties>
           </component>
-          <vspacer id="cacbb">
+          <vspacer id="df35e">
             <constraints>
               <grid row="0" column="1" row-span="1" col-span="2" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
             </constraints>
           </vspacer>
-          <component id="e2fb6" class="javax.swing.JButton" binding="addButton" default-binding="true">
+          <component id="82d5" class="javax.swing.JButton" binding="saveTripButton" default-binding="true">
             <constraints>
               <grid row="1" column="1" row-span="1" col-span="2" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false">
                 <preferred-size width="130" height="36"/>
               </grid>
             </constraints>
             <properties>
-              <text value="Add"/>
+              <text value="Save Trip"/>
             </properties>
           </component>
-          <hspacer id="d4511">
+          <hspacer id="283f9">
             <constraints>
               <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
             </constraints>
