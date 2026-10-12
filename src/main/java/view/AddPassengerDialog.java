@@ -1,61 +1,116 @@
+
 package view;
 
 import javax.swing.*;
 import java.awt.*;
 
 public class AddPassengerDialog extends JDialog {
+
     private JPanel rootPanel;
     private JTextField txtName;
     private JTextField txtContact;
-    private JComboBox cmbStatus;
+    private JLabel lblTickets;
+    private JTextField txtTickets;
     private JButton cancelButton;
     private JButton addButton;
 
     private boolean confirmed = false;
 
-    // add mode: empty form
+    // Add mode
     public AddPassengerDialog(Window owner) {
         super(owner, "Add passenger", Dialog.ModalityType.APPLICATION_MODAL);
+
         setContentPane(rootPanel);
 
-        cmbStatus.setModel(new DefaultComboBoxModel<String>(new String[]{"Active", "Inactive"}));
+        txtTickets.setText("0");
+        txtTickets.setEditable(true);
 
         addButton.addActionListener(e -> onAdd());
         cancelButton.addActionListener(e -> dispose());
 
-        getRootPane().setDefaultButton(addButton);               // Enter = Add
-        getRootPane().registerKeyboardAction(e -> dispose(),     // Esc = Cancel
+        getRootPane().setDefaultButton(addButton);
+
+        getRootPane().registerKeyboardAction(
+                e -> dispose(),
                 KeyStroke.getKeyStroke("ESCAPE"),
-                JComponent.WHEN_IN_FOCUSED_WINDOW);
+                JComponent.WHEN_IN_FOCUSED_WINDOW
+        );
 
         setResizable(false);
         pack();
         setLocationRelativeTo(owner);
     }
 
-    // edit mode: same form, pre-filled with the passenger's current values
-    public AddPassengerDialog(Window owner, String name, String contact) {
+    // Edit mode
+    public AddPassengerDialog(
+            Window owner,
+            String name,
+            String contact,
+            int tickets
+    ) {
         this(owner);
+
         setTitle("Edit passenger");
         addButton.setText("Save changes");
+
         txtName.setText(name);
         txtContact.setText(contact);
-        pack();                          // re-fit in case the button text is wider
+        txtTickets.setText(String.valueOf(tickets));
+
+        lblTickets.setVisible(true);
+        txtTickets.setVisible(true);
+
+        pack();
         setLocationRelativeTo(owner);
     }
 
     private void onAdd() {
-        if (txtName.getText().isBlank() || txtContact.getText().isBlank()) {
-            JOptionPane.showMessageDialog(this, "Name and contact are required.");
+        if (txtName.getText().isBlank()
+                || txtContact.getText().isBlank()) {
+
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Name and contact are required."
+            );
             return;
         }
+
+        try {
+            int tickets = Integer.parseInt(txtTickets.getText().trim());
+
+            if (tickets < 0) {
+                JOptionPane.showMessageDialog(
+                        this,
+                        "Tickets cannot be negative."
+                );
+                return;
+            }
+
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Enter a valid ticket count."
+            );
+            return;
+        }
+
         confirmed = true;
         dispose();
     }
 
-    // getters the view uses to read what was typed
-    public boolean isConfirmed()      { return confirmed; }
-    public String getPassengerName()  { return txtName.getText().trim(); }  // not getName(): JDialog already has one
-    public String getContact()        { return txtContact.getText().trim(); }
-    public String getStatus()         { return (String) cmbStatus.getSelectedItem(); }
+    public boolean isConfirmed() {
+        return confirmed;
+    }
+
+    public String getPassengerName() {
+        return txtName.getText().trim();
+    }
+
+    public String getContact() {
+        return txtContact.getText().trim();
+    }
+
+    public int getTickets() {
+        return Integer.parseInt(txtTickets.getText().trim());
+    }
 }

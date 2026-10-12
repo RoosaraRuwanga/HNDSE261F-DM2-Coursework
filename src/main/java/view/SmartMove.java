@@ -16,7 +16,7 @@ public class SmartMove {
     private JButton Passengers;
     private JButton Tickets;
     private JButton Payments;
-    private JLabel SamartMove;
+    private JLabel SmartMove;
 
     private final CardLayout cards = new CardLayout();
 
@@ -24,16 +24,21 @@ public class SmartMove {
         contentPanel.removeAll();
         contentPanel.setLayout(cards);
 
-        // Real views
+        // Real views (each reloads its data when its button is clicked)
+        // Tickets view
+        TicketView ticketView = new TicketView();
+        register(Tickets, "Tickets", ticketView, ticketView::refresh);
+
         PassengerView passengerView = new PassengerView();
         register(Passengers, "Passengers", passengerView, passengerView::refresh);
 
-        RouteView routeView = new RouteView();                       // CHANGED
-        register(Routes, "Routes", routeView, routeView::refresh);   // CHANGED
+        RouteView routeView = new RouteView();
+        register(Routes, "Routes", routeView, routeView::refresh);
 
         TripView tripView = new TripView();
         register(Trips, "Trips", tripView, tripView::refresh);
 
+        // Feedback: borrow the panel from the teammate's JFrame
         FeedbackView feedbackView = new FeedbackView();
         feedbackView.dispose();
         register(Feedbacks, "Feedback", (JComponent) feedbackView.getContentPane());
@@ -42,10 +47,9 @@ public class SmartMove {
         register(Vehicles,  "Vehicles",    placeholder("Vehicle Management"));
         register(Drivers,   "Drivers",     placeholder("Driver Management"));
         register(Maintance, "Maintenance", placeholder("Maintenance"));
-        register(Tickets,   "Tickets",     placeholder("Tickets"));
         register(Payments,  "Payments",    placeholder("Payments"));
 
-        cards.show(contentPanel, "Routes");                          // CHANGED: start on Routes
+        cards.show(contentPanel, "Routes");      // screen shown at startup
     }
 
     public JPanel getRootPanel() {
@@ -56,6 +60,7 @@ public class SmartMove {
         register(button, name, view, null);
     }
 
+    // onShow runs every time the button is clicked (use it to reload data)
     private void register(JButton button, String name, JComponent view, Runnable onShow) {
         contentPanel.add(view, name);
         button.addActionListener(e -> {

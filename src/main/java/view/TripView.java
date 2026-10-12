@@ -1,3 +1,4 @@
+
 package view;
 
 import data.OracleConnector;
@@ -6,15 +7,9 @@ import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableCellEditor;
-import javax.swing.table.TableCellRenderer;
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Component;
-import java.awt.Font;
 import java.awt.Window;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -27,11 +22,7 @@ public class TripView extends JPanel {
     private JTextField txttrip;
     private JTable table1;
 
-    // Custom Button Styling Colors (matching UI image)
-    private static final Color EDIT_COLOR = Color.decode("#3B4351");   // Dark Gray/Navy
-    private static final Color DELETE_COLOR = Color.decode("#A53344"); // Red / Maroon
-    private static final Color BUTTON_TEXT_COLOR = Color.WHITE;
-
+    // Table columns without Edit and Delete buttons
     private final DefaultTableModel model = new DefaultTableModel(
             new Object[]{
                     "ID",
@@ -39,15 +30,12 @@ public class TripView extends JPanel {
                     "Vehicle",
                     "Driver",
                     "Date",
-                    "Status",
-                    "Edit",
-                    "Delete"
+                    "Status"
             }, 0
     ) {
         @Override
         public boolean isCellEditable(int row, int column) {
-            // Allow column 6 (Edit) and 7 (Delete) to be editable so buttons can respond to clicks
-            return column == 6 || column == 7;
+            return false;
         }
     };
 
@@ -67,26 +55,11 @@ public class TripView extends JPanel {
         table1.setGridColor(Color.decode("#828C9B"));
         table1.setForeground(Color.decode("#191A1C"));
 
-        table1.getColumnModel().getColumn(6).setMaxWidth(90);
-        table1.getColumnModel().getColumn(7).setMaxWidth(90);
-
-        // Apply Custom Button Renderers & Editors to Columns 6 and 7
-        table1.getColumnModel().getColumn(6).setCellRenderer(new ButtonRenderer(EDIT_COLOR));
-        table1.getColumnModel().getColumn(6).setCellEditor(new ButtonEditor(new JCheckBox(), EDIT_COLOR, row -> editTrip(row)));
-
-        table1.getColumnModel().getColumn(7).setCellRenderer(new ButtonRenderer(DELETE_COLOR));
-        table1.getColumnModel().getColumn(7).setCellEditor(new ButtonEditor(new JCheckBox(), DELETE_COLOR, row -> deleteTrip(row)));
-
-
         // =========================
         // ADD TRIP BUTTON
         // =========================
 
-        addTripButton.addActionListener(e -> {
-            System.out.println("ADD TRIP BUTTON CLICKED");
-            openDialog(null);
-        });
-
+        addTripButton.addActionListener(e -> openDialog(null));
 
         // =========================
         // SEARCH
@@ -94,17 +67,23 @@ public class TripView extends JPanel {
 
         txttrip.getDocument().addDocumentListener(
                 new DocumentListener() {
-                    @Override
-                    public void insertUpdate(DocumentEvent e) { refresh(); }
 
                     @Override
-                    public void removeUpdate(DocumentEvent e) { refresh(); }
+                    public void insertUpdate(DocumentEvent e) {
+                        refresh();
+                    }
 
                     @Override
-                    public void changedUpdate(DocumentEvent e) { refresh(); }
+                    public void removeUpdate(DocumentEvent e) {
+                        refresh();
+                    }
+
+                    @Override
+                    public void changedUpdate(DocumentEvent e) {
+                        refresh();
+                    }
                 }
         );
-
 
         // =========================
         // LOAD DATA
@@ -112,7 +91,6 @@ public class TripView extends JPanel {
 
         refresh();
     }
-
 
     // =========================================================
     // REFRESH TABLE
@@ -139,7 +117,6 @@ public class TripView extends JPanel {
                         "OR LOWER(t.status) LIKE ? " +
                         "ORDER BY t.trip_date, t.trip_id";
 
-
         try (
                 Connection con = OracleConnector.getConnection();
                 PreparedStatement ps = con.prepareStatement(sql)
@@ -161,9 +138,7 @@ public class TripView extends JPanel {
                                     rs.getString("license_number"),
                                     rs.getString("driver_name"),
                                     rs.getDate("trip_date"),
-                                    rs.getString("status"),
-                                    "Edit",
-                                    "Delete"
+                                    rs.getString("status")
                             }
                     );
                 }
@@ -171,6 +146,7 @@ public class TripView extends JPanel {
 
         } catch (SQLException ex) {
             ex.printStackTrace();
+
             JOptionPane.showMessageDialog(
                     this,
                     "Could not load trips:\n" + ex.getMessage(),
@@ -180,170 +156,31 @@ public class TripView extends JPanel {
         }
     }
 
-
     // =========================================================
-    // OPEN ADD / EDIT DIALOG
+    // OPEN ADD TRIP DIALOG
     // =========================================================
 
     private void openDialog(Integer tripId) {
+
         try {
-            System.out.println(tripId == null ? "Opening Add Trip..." : "Opening Edit Trip...");
             Window owner = SwingUtilities.getWindowAncestor(this);
+
             AddTripDialog dialog = new AddTripDialog(owner, tripId);
             dialog.setVisible(true);
 
             if (dialog.isSaved()) {
-                System.out.println("Trip saved.");
                 refresh();
             }
 
         } catch (Exception ex) {
             ex.printStackTrace();
+
             JOptionPane.showMessageDialog(
                     this,
                     "Could not open the trip form:\n" + ex.getMessage(),
                     "Error",
                     JOptionPane.ERROR_MESSAGE
             );
-        }
-    }
-
-
-    // =========================================================
-    // EDIT TRIP
-    // =========================================================
-
-    private void editTrip(int row) {
-        int tripId = (Integer) model.getValueAt(row, 0);
-        openDialog(tripId);
-    }
-
-
-    // =========================================================
-    // DELETE TRIP
-    // =========================================================
-
-    private void deleteTrip(int row) {
-        int tripId = (Integer) model.getValueAt(row, 0);
-
-        int answer = JOptionPane.showConfirmDialog(
-                this,
-                "Are you sure you want to delete Trip ID " + tripId + "?",
-                "Delete Trip",
-                JOptionPane.YES_NO_OPTION
-        );
-
-        if (answer != JOptionPane.YES_OPTION) {
-            return;
-        }
-
-        try (
-                Connection con = OracleConnector.getConnection();
-                PreparedStatement ps = con.prepareStatement("DELETE FROM TRIP WHERE trip_id = ?")
-        ) {
-            ps.setInt(1, tripId);
-            ps.executeUpdate();
-
-            JOptionPane.showMessageDialog(this, "Trip deleted successfully.");
-            refresh();
-
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-
-            if (ex.getErrorCode() == 2292) {
-                JOptionPane.showMessageDialog(
-                        this,
-                        "This trip cannot be deleted because tickets are already booked for it.",
-                        "Cannot Delete",
-                        JOptionPane.WARNING_MESSAGE
-                );
-            } else {
-                JOptionPane.showMessageDialog(
-                        this,
-                        "Could not delete trip:\n" + ex.getMessage(),
-                        "Database Error",
-                        JOptionPane.ERROR_MESSAGE
-                );
-            }
-        }
-    }
-
-    // =========================================================
-    // INNER CLASSES: BUTTON RENDERER & EDITOR
-    // =========================================================
-
-    @FunctionalInterface
-    private interface TableButtonCallback {
-        void onClick(int row);
-    }
-
-    private static class ButtonRenderer extends JButton implements TableCellRenderer {
-
-        public ButtonRenderer(Color bg) {
-            setOpaque(true);
-            setFocusPainted(false);
-            setBorderPainted(false);
-            setBackground(bg);
-            setForeground(BUTTON_TEXT_COLOR);
-            setFont(getFont().deriveFont(Font.BOLD, 12f));
-        }
-
-        @Override
-        public Component getTableCellRendererComponent(JTable table, Object value,
-                                                       boolean isSelected, boolean hasFocus,
-                                                       int row, int column) {
-            setText((value == null) ? "" : value.toString());
-            return this;
-        }
-    }
-
-    private static class ButtonEditor extends DefaultCellEditor {
-
-        private final JButton button;
-        private String label;
-        private boolean isPushed;
-        private final TableButtonCallback callback;
-        private JTable table;
-
-        public ButtonEditor(JCheckBox checkBox, Color bg, TableButtonCallback callback) {
-            super(checkBox);
-            this.callback = callback;
-
-            button = new JButton();
-            button.setOpaque(true);
-            button.setFocusPainted(false);
-            button.setBorderPainted(false);
-            button.setBackground(bg);
-            button.setForeground(BUTTON_TEXT_COLOR);
-            button.setFont(button.getFont().deriveFont(Font.BOLD, 12f));
-
-            button.addActionListener(e -> fireEditingStopped());
-        }
-
-        @Override
-        public Component getTableCellEditorComponent(JTable table, Object value,
-                                                     boolean isSelected, int row, int column) {
-            this.table = table;
-            label = (value == null) ? "" : value.toString();
-            button.setText(label);
-            isPushed = true;
-            return button;
-        }
-
-        @Override
-        public Object getCellEditorValue() {
-            if (isPushed && table != null) {
-                int modelRow = table.convertRowIndexToModel(table.getEditingRow());
-                SwingUtilities.invokeLater(() -> callback.onClick(modelRow));
-            }
-            isPushed = false;
-            return label;
-        }
-
-        @Override
-        public boolean stopCellEditing() {
-            isPushed = false;
-            return super.stopCellEditing();
         }
     }
 }

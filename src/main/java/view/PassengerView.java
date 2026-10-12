@@ -32,8 +32,11 @@ public class PassengerView extends JPanel {
 
     // columns 4 and 5 hold the Edit and Delete buttons
     private final DefaultTableModel model = new DefaultTableModel(
-            new String[]{"ID", "Name", "Contact", "Tickets", "", ""}, 0) {
-        @Override public boolean isCellEditable(int row, int col) { return col >= 4; }
+            new String[]{"ID", "Name", "Contact", "Tickets"}, 0) {
+        @Override
+        public boolean isCellEditable(int row, int col) {
+            return false;
+        }
     };
 
     // in-memory changes layered on top of Oracle (lost when the app closes)
@@ -51,11 +54,6 @@ public class PassengerView extends JPanel {
         table1.setShowVerticalLines(false);
         table1.setGridColor(Color.decode("#828C9B"));
         table1.setForeground(Color.decode("#191A1C"));
-
-        new ButtonColumn(table1, 4, "Edit",   Color.decode("#40434A"), this::editRow);
-        new ButtonColumn(table1, 5, "Delete", Color.decode("#AD353F"), this::deleteRow);
-        table1.getColumnModel().getColumn(4).setMaxWidth(90);
-        table1.getColumnModel().getColumn(5).setMaxWidth(90);
 
         searchBoxTextField.getDocument().addDocumentListener(new DocumentListener() {
             public void insertUpdate(DocumentEvent e)  { refresh(); }
@@ -124,25 +122,81 @@ public class PassengerView extends JPanel {
         refresh();
     }
 
+
     private void editRow(int row) {
         int id = (Integer) model.getValueAt(row, 0);
         String name = (String) model.getValueAt(row, 1);
         String contact = (String) model.getValueAt(row, 2);
+        int tickets = ((Number) model.getValueAt(row, 3)).intValue();
 
         AddPassengerDialog dialog = new AddPassengerDialog(
-                SwingUtilities.getWindowAncestor(this), name, contact);
-        dialog.setVisible(true);
-        if (!dialog.isConfirmed()) return;
+                SwingUtilities.getWindowAncestor(this),
+                name,
+                contact,
+                tickets
+        );
 
-        Object[] local = findLocal(id);
-        if (local != null) {                                     // a passenger added in this session
-            local[1] = dialog.getPassengerName();
-            local[2] = dialog.getContact();
-        } else {                                                 // a passenger from Oracle
-            edits.put(id, new String[]{dialog.getPassengerName(), dialog.getContact()});
+        dialog.setVisible(true);
+
+        if (!dialog.isConfirmed()) {
+            return;
         }
-        refresh();
+
+        String newName = dialog.getPassengerName();
+        String newContact = dialog.getContact();
+        int newTickets = dialog.getTickets();
+
+        // Update a passenger added locally
+        Object[] local = findLocal(id);
+
+        if (local != null) {
+            local[1] = newName;
+            local[2] = newContact;
+            local[3] = newTickets;
+
+            refresh();
+            return;
+        }
+
+        // Update passenger details in Oracle
+        String sql = "UPDATE PASSENGER " +
+                "SET passenger_name = ?, contact = ? " +
+                "WHERE passenger_id = ?";
+
+        try (Connection con = OracleConnector.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setString(1, newName);
+            ps.setString(2, newContact);
+            ps.setInt(3, id);
+
+            int updated = ps.executeUpdate();
+
+            if (updated > 0) {
+                JOptionPane.showMessageDialog(
+                        this,
+                        "Passenger updated successfully.\n" +
+                                "Ticket count entered: " + newTickets
+                );
+
+                refresh();
+            } else {
+                JOptionPane.showMessageDialog(
+                        this,
+                        "Passenger not found."
+                );
+            }
+
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Could not update passenger:\n" + ex.getMessage(),
+                    "Database error",
+                    JOptionPane.ERROR_MESSAGE
+            );
+        }
     }
+
 
     private void deleteRow(int row) {
         int id = (Integer) model.getValueAt(row, 0);

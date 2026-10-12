@@ -39,11 +39,6 @@ public class RouteView extends JPanel {
         table1.setGridColor(Color.decode("#828C9B"));
         table1.setForeground(Color.decode("#191A1C"));
 
-        new ButtonColumn(table1, 3, "Edit",   Color.decode("#40434A"), this::editRow);
-        new ButtonColumn(table1, 4, "Delete", Color.decode("#AD353F"), this::deleteRow);
-        table1.getColumnModel().getColumn(3).setMaxWidth(90);
-        table1.getColumnModel().getColumn(4).setMaxWidth(90);
-
         button1.addActionListener(e -> {
             AddRouteDialog dialog = new AddRouteDialog(SwingUtilities.getWindowAncestor(this));
             dialog.setVisible(true);
