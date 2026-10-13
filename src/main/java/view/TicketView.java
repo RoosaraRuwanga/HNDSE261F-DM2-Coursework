@@ -1,24 +1,23 @@
 package view;
 
 import data.OracleConnector;
+
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.Statement;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.Statement;
 
 public class TicketView {
-    private JLabel lblHeading;
     private JTextField txtSearchTicket;
-    private JButton btnAddTicket;
     private JTable tblTickets;
-    private JPanel Panel;
+    private JPanel RootPanel;
+    private JButton addTicketsButton;
     private JButton btnChangeStatus;
-    private JLabel lblSearch;
 
     public TicketView(){
         String[] columns = {"ID", "Passenger ID", "Trip ID", "Seat", "Status"};
@@ -26,7 +25,7 @@ public class TicketView {
         tblTickets.setModel(model);
         loadData();
 
-        btnAddTicket.addActionListener(new ActionListener() {
+        addTicketsButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 AddTicketDialog dialog = new AddTicketDialog();
@@ -101,11 +100,21 @@ public class TicketView {
     }
     //Main method for testing purposes
     //public static void main(String[] args) {
-        //JFrame frame = new JFrame("TicketView");
-       // TicketView viewInstance = new TicketView();
-       // frame.setContentPane(viewInstance.Panel);
-       // frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-       // frame.pack();
-       // frame.setVisible(true);
+    //JFrame frame = new JFrame("TicketView");
+    // TicketView viewInstance = new TicketView();
+    // frame.setContentPane(viewInstance.RootPanel);
+    // frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    // frame.pack();
+    // frame.setVisible(true);
     //}
+
+    // added so SmartMove can place this screen in its content panel
+    public JPanel getRootPanel() {
+        return RootPanel;
+    }
+
+    // added so SmartMove can reload the table when the Tickets button is clicked
+    public void refresh() {
+        loadData();
+    }
 }

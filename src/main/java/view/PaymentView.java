@@ -12,12 +12,10 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
 public class PaymentView {
-    private JLabel lblHeading;
     private JButton btnAddPayment;
     private JTextField txtSearchPayments;
     private JTable tblPayments;
-    private JPanel Panel;
-    private JLabel lblSearchPayments;
+    private JPanel RootPanel;
 
     public PaymentView() {
         String[] columns = {"Payment ID", "Ticket ID", "Amount", "Payment Date"};
@@ -98,4 +96,14 @@ public class PaymentView {
       //  frame.pack();
       //  frame.setVisible(true);
    // }
+
+    // added so SmartMove can place this screen in its content panel
+    public JPanel getRootPanel() {
+        return RootPanel;
+    }
+
+    // added so SmartMove can reload the table when the Tickets button is clicked
+    public void refresh() {
+        loadData();
+    }
 }

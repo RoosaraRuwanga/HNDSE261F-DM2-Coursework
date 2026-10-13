@@ -1,75 +1,91 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="view.TicketView">
-  <grid id="27dc6" binding="Panel" layout-manager="GridLayoutManager" row-count="4" column-count="13" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
-    <margin top="0" left="0" bottom="0" right="0"/>
+  <grid id="27dc6" binding="RootPanel" layout-manager="GridLayoutManager" row-count="3" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="12">
+    <margin top="24" left="32" bottom="24" right="32"/>
     <constraints>
       <xy x="20" y="20" width="517" height="400"/>
     </constraints>
     <properties>
       <background color="-7973"/>
+      <doubleBuffered value="true"/>
     </properties>
     <border type="none">
       <size top="20" left="20" bottom="20" right="20"/>
     </border>
     <children>
-      <component id="43d50" class="javax.swing.JTextField" binding="txtSearchTicket">
+      <grid id="2cbb0" layout-manager="GridLayoutManager" row-count="1" column-count="3" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+        <margin top="0" left="0" bottom="0" right="0"/>
         <constraints>
-          <grid row="2" column="2" row-span="1" col-span="10" vsize-policy="0" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false">
-            <preferred-size width="150" height="-1"/>
-          </grid>
+          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="1" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
-          <text value=""/>
+          <background color="-7973"/>
         </properties>
-      </component>
-      <component id="b13e6" class="javax.swing.JButton" binding="btnAddTicket">
+        <border type="none"/>
+        <children>
+          <component id="2f687" class="javax.swing.JLabel">
+            <constraints>
+              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="5" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <font name="Bahnschrift" size="18" style="1"/>
+              <foreground color="-12183780"/>
+              <text value="Ticket Management"/>
+            </properties>
+          </component>
+          <component id="70fb4" class="javax.swing.JButton" binding="addTicketsButton" default-binding="true">
+            <constraints>
+              <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="1" anchor="0" fill="3" indent="0" use-parent-layout="false">
+                <preferred-size width="150" height="36"/>
+              </grid>
+            </constraints>
+            <properties>
+              <background color="-5425857"/>
+              <foreground color="-7973"/>
+              <label value="Add Tickets"/>
+              <text value="Add Tickets"/>
+            </properties>
+          </component>
+          <component id="75494" class="javax.swing.JButton" binding="btnChangeStatus">
+            <constraints>
+              <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="1" anchor="0" fill="3" indent="0" use-parent-layout="false">
+                <preferred-size width="150" height="36"/>
+              </grid>
+            </constraints>
+            <properties>
+              <background color="-5425857"/>
+              <foreground color="-7973"/>
+              <label value="Change Entry Status"/>
+              <text value="Change Entry Status"/>
+            </properties>
+          </component>
+        </children>
+      </grid>
+      <scrollpane id="4c2d9">
         <constraints>
-          <grid row="1" column="5" row-span="1" col-span="7" vsize-policy="0" hsize-policy="3" anchor="4" fill="0" indent="0" use-parent-layout="false"/>
-        </constraints>
-        <properties>
-          <background color="-5425857"/>
-          <text value="+ Add Ticket"/>
-        </properties>
-      </component>
-      <scrollpane id="12dbe">
-        <constraints>
-          <grid row="3" column="1" row-span="1" col-span="11" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+          <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties/>
         <border type="none"/>
         <children>
-          <component id="a81dc" class="javax.swing.JTable" binding="tblTickets">
+          <component id="43c07" class="javax.swing.JTable" binding="tblTickets">
             <constraints/>
             <properties/>
           </component>
         </children>
       </scrollpane>
-      <component id="44ae" class="javax.swing.JLabel" binding="lblHeading">
+      <component id="be19c" class="javax.swing.JTextField" binding="txtSearchTicket">
         <constraints>
-          <grid row="1" column="1" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="1" use-parent-layout="false"/>
+          <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+            <preferred-size width="-1" height="36"/>
+          </grid>
         </constraints>
         <properties>
-          <foreground color="-16777216"/>
-          <text value="Ticket Booking"/>
-        </properties>
-      </component>
-      <component id="745a0" class="javax.swing.JButton" binding="btnChangeStatus">
-        <constraints>
-          <grid row="1" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="5" fill="0" indent="0" use-parent-layout="false"/>
-        </constraints>
-        <properties>
-          <background color="-5425857"/>
-          <horizontalAlignment value="0"/>
-          <text value="Change entry Status"/>
-        </properties>
-      </component>
-      <component id="6c916" class="javax.swing.JLabel" binding="lblSearch">
-        <constraints>
-          <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-        </constraints>
-        <properties>
-          <foreground color="-16777216"/>
-          <text value="Search Tickets :"/>
+          <background color="-7973"/>
+          <foreground color="-12183780"/>
+          <name value=""/>
+          <text value=""/>
+          <toolTipText value=""/>
         </properties>
       </component>
     </children>

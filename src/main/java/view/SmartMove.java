@@ -25,9 +25,11 @@ public class SmartMove {
         contentPanel.setLayout(cards);
 
         // Real views (each reloads its data when its button is clicked)
-        // Tickets view
         TicketView ticketView = new TicketView();
-        register(Tickets, "Tickets", ticketView, ticketView::refresh);
+        register(Tickets, "Tickets", ticketView.getRootPanel(), ticketView::refresh);
+
+        PaymentView paymentView = new PaymentView();
+        register(Payments, "Payments", paymentView.getRootPanel(), paymentView::refresh);
 
         PassengerView passengerView = new PassengerView();
         register(Passengers, "Passengers", passengerView, passengerView::refresh);
@@ -47,7 +49,6 @@ public class SmartMove {
         register(Vehicles,  "Vehicles",    placeholder("Vehicle Management"));
         register(Drivers,   "Drivers",     placeholder("Driver Management"));
         register(Maintance, "Maintenance", placeholder("Maintenance"));
-        register(Payments,  "Payments",    placeholder("Payments"));
 
         cards.show(contentPanel, "Routes");      // screen shown at startup
     }
