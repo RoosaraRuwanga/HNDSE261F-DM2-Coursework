@@ -3,10 +3,12 @@ package view;
 import javax.swing.*;
 
 public class VehicleView {
-    private JPanel RootPanel;
-    private JPanel MainPanel;
+    private JPanel RootPanelV;
+    private JPanel MainPanelV;
     private JPanel headerPanel;
-    private JButton btnVehicle;
-    private JTextField searchBoxTextField;
+    private JButton btnVehicleAdd;
+    private JTextField SearchBoxV;
     private JTable table1;
+    private JLabel lblVManage;
+    private JScrollPane TblV;
 }
