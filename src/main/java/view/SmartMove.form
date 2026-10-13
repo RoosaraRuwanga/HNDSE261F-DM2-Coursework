@@ -77,7 +77,7 @@
               <text value="Drivers"/>
             </properties>
           </component>
-          <component id="2e124" class="javax.swing.JButton" binding="Maintance">
+          <component id="2e124" class="javax.swing.JButton" binding="Maintenance">
             <constraints>
               <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="3" indent="0" use-parent-layout="false">
                 <minimum-size width="-1" height="50"/>
@@ -90,8 +90,8 @@
               <enabled value="true"/>
               <focusable value="false"/>
               <foreground color="-7973"/>
-              <label value="Maintance"/>
-              <text value="Maintance"/>
+              <label value="Maintenance"/>
+              <text value="Maintenance"/>
             </properties>
           </component>
           <component id="125e5" class="javax.swing.JButton" binding="Routes">
