@@ -1,14 +1,14 @@
 package view;
 
-import com.mongodb.client.model.Window;
 import controller.DriverController;
+import controller.DriverController.Driver; //I keep forgetting to import the controller
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.sql.Driver;
+import java.util.List;
 import java.sql.SQLException;
 
 public class DriverView extends JPanel {
@@ -76,7 +76,7 @@ public class DriverView extends JPanel {
     }
 
     private void openDialog() {
-        AddDriverDialog dialog = new AddDriverDialog ((SwingUtilities.getWindowAncestor(this));
+        AddDriverDialog dialog = new AddDriverDialog (SwingUtilities.getWindowAncestor(this));
         dialog.setVisible(true);
 
         if (dialog.isSaved()) {
