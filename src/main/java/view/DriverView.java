@@ -1,18 +1,17 @@
 package view;
 
 import controller.DriverController;
+import controller.DriverController.Driver;     // YOUR Driver class
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
-import java.awt.BorderLayout;
-import java.awt.Color;
+import java.awt.*;
 import java.sql.SQLException;
 import java.util.List;
 
 public class DriverView extends JPanel {
-
     private JPanel RootPanelD;
     private JPanel MainPanelD;
     private JLabel lblDManage;
@@ -21,14 +20,14 @@ public class DriverView extends JPanel {
     private JTable table1;
     private JScrollPane TbleD;
 
-    private final DriverController driverController =
-            new DriverController();
+    //This will be used to form the connection with the Controller Class
+    private final DriverController driverController = new DriverController();
 
-    // Table model holding the values from the DB
+    //This is the Table holding the values of the Schema or DB
     private final DefaultTableModel model = new DefaultTableModel(
             new String[]{"ID", "Name", "Licence", "Contact", "Status"}, 0
     ) {
-        // Stops users from typing into the cells
+        //Overriding "isCelleditable = false" will stop users from typing into the cells
         @Override
         public boolean isCellEditable(int row, int column) {
             return false;
@@ -39,6 +38,7 @@ public class DriverView extends JPanel {
         setLayout(new BorderLayout());
         add(RootPanelD, BorderLayout.CENTER);
 
+        //Dis da table
         table1.setModel(model);
         table1.setRowHeight(32);
         table1.setFillsViewportHeight(true);
@@ -48,68 +48,40 @@ public class DriverView extends JPanel {
 
         btnDriverAdd.addActionListener(e -> openDialog());
 
-        SearchBoxD.getDocument().addDocumentListener(
-                new DocumentListener() {
-                    @Override
-                    public void insertUpdate(DocumentEvent e) {
-                        refresh();
-                    }
-
-                    @Override
-                    public void removeUpdate(DocumentEvent e) {
-                        refresh();
-                    }
-
-                    @Override
-                    public void changedUpdate(DocumentEvent e) {
-                        refresh();
-                    }
-                }
-        );
+        //This is the All Important Search Function and document listener provides that
+        SearchBoxD.getDocument().addDocumentListener(new DocumentListener() {
+            public void insertUpdate(DocumentEvent e)  { refresh(); }
+            public void removeUpdate(DocumentEvent e)  { refresh(); }
+            public void changedUpdate(DocumentEvent e) { refresh(); }
+        });
 
         refresh();
     }
 
     public void refresh() {
         try {
-            List<DriverController.Driver> drivers =
-                    driverController.getDrivers(SearchBoxD.getText());
+            List<Driver> drivers = driverController.getDrivers(SearchBoxD.getText());
 
             model.setRowCount(0);
-
-            for (DriverController.Driver driver : drivers) {
+            for (Driver d : drivers) {
                 model.addRow(new Object[]{
-                        driver.getId(),
-                        driver.getName(),
-                        driver.getLicense(),
-                        driver.getContact(),
-                        driver.getStatus()
+                        d.getId(), d.getName(), d.getLicense(), d.getContact(), d.getStatus()
                 });
             }
-
         } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(
-                    this,
+            JOptionPane.showMessageDialog(this,
                     "Could not load drivers:\n" + ex.getMessage(),
-                    "Database Error",
-                    JOptionPane.ERROR_MESSAGE
-            );
+                    "Database Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
     private void openDialog() {
-        AddDriverDialog dialog = new AddDriverDialog(
-                SwingUtilities.getWindowAncestor(this)
-        );
+        AddDriverDialog dialog = new AddDriverDialog (SwingUtilities.getWindowAncestor(this));
         dialog.setVisible(true);
 
         if (dialog.isSaved()) {
             refresh();
         }
     }
-
-    // Allows SmartMove to access the panel.
-    public JPanel getRootPanel() {
-        return RootPanelD;
-    }
 }
+

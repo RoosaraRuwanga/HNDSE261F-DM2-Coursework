@@ -127,4 +127,9 @@ public class TripView extends JPanel {
             );
         }
     }
+    // added so SmartMove can place this screen in its content panel
+    public JPanel getRootPanel() {
+        return RootPlan;
+    }
+
 }

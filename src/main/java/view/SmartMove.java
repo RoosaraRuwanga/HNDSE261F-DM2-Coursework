@@ -52,10 +52,10 @@ public class SmartMove {
         // Trips
         TripView tripView = new TripView();
         register(Trips, "Trips",
-                tripView, tripView::refresh);
+                tripView.getRootPanel(), tripView::refresh);
 
-        driverView = new DriverView();
-        register(Drivers, "Drivers", driverView, driverView::refresh);
+        VehicleView vehicleView = new VehicleView();
+        register(Vehicles, "Vehicles", vehicleView.getRootPanel(), vehicleView::refresh);
 
         FeedbackView feedbackView = new FeedbackView();
         JComponent feedbackPanel =
