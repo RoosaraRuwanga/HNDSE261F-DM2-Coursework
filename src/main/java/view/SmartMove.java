@@ -10,7 +10,7 @@ public class SmartMove {
     private JButton Trips;
     private JButton Vehicles;
     private JButton Drivers;
-    private JButton Maintance;
+    private JButton Maintenance;
     private JButton Routes;
     private JButton Feedbacks;
     private JButton Passengers;
@@ -24,48 +24,86 @@ public class SmartMove {
         contentPanel.removeAll();
         contentPanel.setLayout(cards);
 
-        // Real views (each reloads its data when its button is clicked)
-        // Tickets view
+        // Tickets
         TicketView ticketView = new TicketView();
-        register(Tickets, "Tickets", ticketView, ticketView::refresh);
+        register(Tickets, "Tickets",
+                ticketView.getRootPanel(), ticketView::refresh);
 
+        // Payments
+        PaymentView paymentView = new PaymentView();
+        register(Payments, "Payments",
+                paymentView.getRootPanel(), paymentView::refresh);
+
+        // Drivers
+        DriverView driverView = new DriverView();
+        register(Drivers, "Drivers",
+                driverView.getRootPanel(), driverView::refresh);
+
+        // Passengers
         PassengerView passengerView = new PassengerView();
-        register(Passengers, "Passengers", passengerView, passengerView::refresh);
+        register(Passengers, "Passengers",
+                passengerView, passengerView::refresh);
 
+        // Routes
         RouteView routeView = new RouteView();
-        register(Routes, "Routes", routeView, routeView::refresh);
+        register(Routes, "Routes",
+                routeView, routeView::refresh);
 
+        // Trips
         TripView tripView = new TripView();
-        register(Trips, "Trips", tripView, tripView::refresh);
+        register(Trips, "Trips",
+                tripView, tripView::refresh);
 
-        // Feedback: borrow the panel from the teammate's JFrame
+        // Feedback
         FeedbackView feedbackView = new FeedbackView();
+        JComponent feedbackPanel =
+                (JComponent) feedbackView.getContentPane();
         feedbackView.dispose();
-        register(Feedbacks, "Feedback", (JComponent) feedbackView.getContentPane());
 
-        // Placeholders until these views are built
-        register(Vehicles,  "Vehicles",    placeholder("Vehicle Management"));
-        register(Drivers,   "Drivers",     placeholder("Driver Management"));
-        register(Maintance, "Maintenance", placeholder("Maintenance"));
-        register(Payments,  "Payments",    placeholder("Payments"));
+        register(Feedbacks, "Feedback", feedbackPanel);
 
-        cards.show(contentPanel, "Routes");      // screen shown at startup
+        // Placeholders for screens not yet implemented
+        register(Vehicles, "Vehicles",
+                placeholder("Vehicle Management"));
+
+        register(Maintenance, "Maintenance",
+                placeholder("Maintenance"));
+
+        // Show the Routes screen at startup
+        cards.show(contentPanel, "Routes");
+
+        contentPanel.revalidate();
+        contentPanel.repaint();
     }
 
     public JPanel getRootPanel() {
         return panel1;
     }
 
-    private void register(JButton button, String name, JComponent view) {
+    private void register(
+            JButton button,
+            String name,
+            JComponent view) {
+
         register(button, name, view, null);
     }
 
-    // onShow runs every time the button is clicked (use it to reload data)
-    private void register(JButton button, String name, JComponent view, Runnable onShow) {
+    private void register(
+            JButton button,
+            String name,
+            JComponent view,
+            Runnable onShow) {
+
         contentPanel.add(view, name);
+
         button.addActionListener(e -> {
-            if (onShow != null) onShow.run();
+            if (onShow != null) {
+                onShow.run();
+            }
+
             cards.show(contentPanel, name);
+            contentPanel.revalidate();
+            contentPanel.repaint();
         });
     }
 
@@ -77,12 +115,14 @@ public class SmartMove {
     }
 
     private void createUIComponents() {
-        // TODO: place custom component creation code here
+        // Custom component creation, if required
     }
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
-            JFrame frame = new JFrame("SmartMove Transport Solutions");
+            JFrame frame =
+                    new JFrame("SmartMove Transport Solutions");
+
             frame.setContentPane(new SmartMove().getRootPanel());
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             frame.setSize(1200, 700);

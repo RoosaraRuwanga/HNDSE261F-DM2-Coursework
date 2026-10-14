@@ -6,11 +6,13 @@ import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
-import java.awt.*;
-import java.sql.Driver;
+import java.awt.BorderLayout;
+import java.awt.Color;
 import java.sql.SQLException;
+import java.util.List;
 
 public class DriverView extends JPanel {
+
     private JPanel RootPanelD;
     private JPanel MainPanelD;
     private JLabel lblDManage;
@@ -19,7 +21,8 @@ public class DriverView extends JPanel {
     private JTable table1;
     private JScrollPane TbleD;
 
-    private final DriverController driverController = new DriverController();
+    private final DriverController driverController =
+            new DriverController();
 
     private final DefaultTableModel model = new DefaultTableModel(
             new String[]{"ID", "Name", "Licence", "Contact", "Status"}, 0
@@ -43,39 +46,69 @@ public class DriverView extends JPanel {
 
         btnDriverAdd.addActionListener(e -> openDialog());
 
-        SearchBoxD.getDocument().addDocumentListener(new DocumentListener() {
-            public void insertUpdate(DocumentEvent e)  { refresh(); }
-            public void removeUpdate(DocumentEvent e)  { refresh(); }
-            public void changedUpdate(DocumentEvent e) { refresh(); }
-        });
+        SearchBoxD.getDocument().addDocumentListener(
+                new DocumentListener() {
+                    @Override
+                    public void insertUpdate(DocumentEvent e) {
+                        refresh();
+                    }
+
+                    @Override
+                    public void removeUpdate(DocumentEvent e) {
+                        refresh();
+                    }
+
+                    @Override
+                    public void changedUpdate(DocumentEvent e) {
+                        refresh();
+                    }
+                }
+        );
 
         refresh();
     }
 
     public void refresh() {
         try {
-            List<Driver> drivers = driverController.getDrivers(SearchBoxD.getText());
+            List<DriverController.Driver> drivers =
+                    driverController.getDrivers(SearchBoxD.getText());
 
             model.setRowCount(0);
-            for (Driver d : drivers) {
+
+            for (DriverController.Driver driver : drivers) {
                 model.addRow(new Object[]{
-                        d.getId(), d.getName(), d.getLicense(), d.getContact(), d.getStatus()
+                        driver.getId(),
+                        driver.getName(),
+                        driver.getLicense(),
+                        driver.getContact(),
+                        driver.getStatus()
                 });
             }
+
         } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(this,
+            JOptionPane.showMessageDialog(
+                    this,
                     "Could not load drivers:\n" + ex.getMessage(),
-                    "Database Error", JOptionPane.ERROR_MESSAGE);
+                    "Database Error",
+                    JOptionPane.ERROR_MESSAGE
+            );
         }
     }
 
     private void openDialog() {
-        AddDriverDialog dialog = new AddDriverDialog(SwingUtilities.getWindowAncestor(this));
+        AddDriverDialog dialog = new AddDriverDialog(
+                SwingUtilities.getWindowAncestor(this)
+        );
+
         dialog.setVisible(true);
 
         if (dialog.isSaved()) {
             refresh();
         }
     }
-}
 
+    // Allows SmartMove to access the panel.
+    public JPanel getRootPanel() {
+        return RootPanelD;
+    }
+}
