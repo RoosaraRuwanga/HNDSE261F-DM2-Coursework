@@ -1,5 +1,6 @@
 package view;
 
+import com.mongodb.client.model.Window;
 import controller.DriverController;
 
 import javax.swing.*;
@@ -21,12 +22,19 @@ public class DriverView extends JPanel {
     private JTable table1;
     private JScrollPane TbleD;
 
+<<<<<<< HEAD
     private final DriverController driverController =
             new DriverController();
+=======
+    //This will be used to form the connection with the Controller Class
+    private final DriverController driverController = new DriverController();
+>>>>>>> 2f0e2ba1517bdd044b8a9c1823d7aec32f939d71
 
+    //This is the Table holding the values of the Schema or DB
     private final DefaultTableModel model = new DefaultTableModel(
             new String[]{"ID", "Name", "Licence", "Contact", "Status"}, 0
     ) {
+        //Overriding "isCelleditable = false" will stop users from typing into the cells
         @Override
         public boolean isCellEditable(int row, int column) {
             return false;
@@ -37,6 +45,7 @@ public class DriverView extends JPanel {
         setLayout(new BorderLayout());
         add(RootPanelD, BorderLayout.CENTER);
 
+        //Dis da table
         table1.setModel(model);
         table1.setRowHeight(32);
         table1.setFillsViewportHeight(true);
@@ -46,6 +55,7 @@ public class DriverView extends JPanel {
 
         btnDriverAdd.addActionListener(e -> openDialog());
 
+<<<<<<< HEAD
         SearchBoxD.getDocument().addDocumentListener(
                 new DocumentListener() {
                     @Override
@@ -64,6 +74,14 @@ public class DriverView extends JPanel {
                     }
                 }
         );
+=======
+        //This is the All Important Search Function and document listener provides that
+        SearchBoxD.getDocument().addDocumentListener(new DocumentListener() {
+            public void insertUpdate(DocumentEvent e)  { refresh(); }
+            public void removeUpdate(DocumentEvent e)  { refresh(); }
+            public void changedUpdate(DocumentEvent e) { refresh(); }
+        });
+>>>>>>> 2f0e2ba1517bdd044b8a9c1823d7aec32f939d71
 
         refresh();
     }
@@ -96,10 +114,14 @@ public class DriverView extends JPanel {
     }
 
     private void openDialog() {
+<<<<<<< HEAD
         AddDriverDialog dialog = new AddDriverDialog(
                 SwingUtilities.getWindowAncestor(this)
         );
 
+=======
+        AddDriverDialog dialog = new AddDriverDialog ((SwingUtilities.getWindowAncestor(this));
+>>>>>>> 2f0e2ba1517bdd044b8a9c1823d7aec32f939d71
         dialog.setVisible(true);
 
         if (dialog.isSaved()) {

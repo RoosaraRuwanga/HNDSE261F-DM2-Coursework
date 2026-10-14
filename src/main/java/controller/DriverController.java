@@ -15,8 +15,12 @@ public class DriverController {
         private final int id;
         private final String name, license, contact, status;
 
+<<<<<<< HEAD
         public Driver(int id, String name, String license,
                       String contact, String status) {
+=======
+        public Driver(int id, String name, String license, String contact, String status) {
+>>>>>>> 2f0e2ba1517bdd044b8a9c1823d7aec32f939d71
             this.id = id;
             this.name = name;
             this.license = license;
@@ -46,6 +50,7 @@ public class DriverController {
     }
 
     public List<Driver> getDrivers(String search) throws SQLException {
+<<<<<<< HEAD
         String sql = "SELECT driver_id, driver_name, license_no, contact, status "
                 + "FROM DRIVER "
                 + "WHERE LOWER(driver_name) LIKE ? "
@@ -53,6 +58,12 @@ public class DriverController {
                 + "ORDER BY driver_id";
 
         String term = "%" + (search == null ? "" : search.trim().toLowerCase()) + "%";
+=======
+        String sql = "SELECT DRIVER_ID, DRIVER_NAME, LICENSE_NUMBER, CONTACT, STATUS FROM DRIVER " +
+                "WHERE LOWER(DRIVER_NAME) LIKE ? OR LOWER(LICENSE_NUMBER) LIKE ? " +
+                "ORDER BY DRIVER_ID";
+        String term = "%" + search.trim().toLowerCase() + "%";
+>>>>>>> 2f0e2ba1517bdd044b8a9c1823d7aec32f939d71
         List<Driver> list = new ArrayList<>();
 
         try (Connection con = OracleConnector.getConnection();
@@ -89,10 +100,16 @@ public class DriverController {
             );
         }
 
+<<<<<<< HEAD
         String sql = "INSERT INTO DRIVER "
                 + "(driver_id, driver_name, license_no, contact, status) "
                 + "SELECT NVL(MAX(driver_id), 0) + 1, ?, ?, ?, ? "
                 + "FROM DRIVER";
+=======
+        // next ID = highest existing ID + 1, same trick as AddRouteDialog, where it jsut finds the finds all the ID's and add it in nicey, I want sleep
+        String sql = "INSERT INTO DRIVER (DRIVER_ID, DRIVER_NAME, LICENSE_NUMBER, CONTACT, STATUS) " +
+                "SELECT NVL(MAX(DRIVER_ID), 0) + 1, ?, ?, ?, ? FROM DRIVER";
+>>>>>>> 2f0e2ba1517bdd044b8a9c1823d7aec32f939d71
 
         try (Connection con = OracleConnector.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {

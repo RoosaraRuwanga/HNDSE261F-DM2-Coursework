@@ -1,5 +1,9 @@
 package view;
 
+<<<<<<< HEAD
+=======
+import java.awt.Window;
+>>>>>>> 2f0e2ba1517bdd044b8a9c1823d7aec32f939d71
 import controller.DriverController;
 
 import javax.swing.*;
@@ -7,7 +11,10 @@ import java.awt.Window;
 import java.sql.SQLException;
 
 public class AddDriverDialog extends JDialog {
+<<<<<<< HEAD
 
+=======
+>>>>>>> 2f0e2ba1517bdd044b8a9c1823d7aec32f939d71
     private JPanel RootPanelDD;
     private JPanel MainPanelDD;
     private JLabel lblDHead;
@@ -34,12 +41,19 @@ public class AddDriverDialog extends JDialog {
         setContentPane(RootPanelDD);
 
         cmbAddD.setModel(new DefaultComboBoxModel<>(
+<<<<<<< HEAD
                 new String[]{"Active", "Inactive", "On Leave"}
         ));
 
         btnAddD.addActionListener(e -> save());
         BtnCancelD.addActionListener(e -> dispose());
 
+=======
+                new String[]{"Active", "Inactive", "On Leave"}));
+
+        btnAddD.addActionListener(e -> save());
+        BtnCancelD.addActionListener(e -> dispose());
+>>>>>>> 2f0e2ba1517bdd044b8a9c1823d7aec32f939d71
         getRootPane().setDefaultButton(btnAddD);
 
         pack();
