@@ -38,6 +38,10 @@ public class SmartMove {
         TripView tripView = new TripView();
         register(Trips, "Trips", tripView, tripView::refresh);
 
+        //It's me Thevan!                                             I want sleep
+        DriverView driverView = new DriverView();
+        register(Drivers, "Drivers", driverView, driverView::refresh);
+
         // Feedback: borrow the panel from the teammate's JFrame
         FeedbackView feedbackView = new FeedbackView();
         feedbackView.dispose();

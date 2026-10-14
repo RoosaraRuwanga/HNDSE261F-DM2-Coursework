@@ -16,19 +16,38 @@ public class DriverController {
         private final String name, license, contact, status;
 
         public Driver(int id, String name, String license, String contact, String status) {
-            this.id = id; this.name= name; this.license = license; this.contact = contact; this.status = status;
+            this.id = id;
+            this.name = name;
+            this.license = license;
+            this.contact = contact;
+            this.status = status;
         }
-        public int getId()         { return id; }
-        public String getName()    { return name; }
-        public String getLicense() { return license; }
-        public String getContact() { return contact; }
-        public String getStatus()  { return status; }
+
+        public int getId() {
+            return id;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public String getLicense() {
+            return license;
+        }
+
+        public String getContact() {
+            return contact;
+        }
+
+        public String getStatus() {
+            return status;
+        }
     }
 
     public List<Driver> getDrivers(String search) throws SQLException {
-        String sql = "SELECT driver_id, driver_name, license_no, contact, status FROM DRIVER " +
-                "WHERE LOWER(driver_name) LIKE ? OR LOWER(license_no) LIKE ? " +
-                "ORDER BY driver_id";
+        String sql = "SELECT DRIVER_ID, DRIVER_NAME, LICENSE_NUMBER, CONTACT, STATUS FROM DRIVER " +
+                "WHERE LOWER(DRIVER_NAME) LIKE ? OR LOWER(LICENSE_NUMBER) LIKE ? " +
+                "ORDER BY DRIVER_ID";
         String term = "%" + search.trim().toLowerCase() + "%";
         List<Driver> list = new ArrayList<>();
 
@@ -54,9 +73,9 @@ public class DriverController {
             throw new IllegalArgumentException("Name, licence and contact are required.");
         }
 
-        // next ID = highest existing ID + 1, same trick as AddRouteDialog
-        String sql = "INSERT INTO DRIVER (driver_id, driver_name, license_no, contact, status) " +
-                "SELECT NVL(MAX(driver_id), 0) + 1, ?, ?, ?, ? FROM DRIVER";
+        // next ID = highest existing ID + 1, same trick as AddRouteDialog, where it jsut finds the finds all the ID's and add it in nicey, I want sleep
+        String sql = "INSERT INTO DRIVER (DRIVER_ID, DRIVER_NAME, LICENSE_NUMBER, CONTACT, STATUS) " +
+                "SELECT NVL(MAX(DRIVER_ID), 0) + 1, ?, ?, ?, ? FROM DRIVER";
 
         try (Connection con = OracleConnector.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
@@ -67,3 +86,4 @@ public class DriverController {
             ps.executeUpdate();
         }
     }
+}

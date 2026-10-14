@@ -1,5 +1,6 @@
 package view;
 
+import com.mongodb.client.model.Window;
 import controller.DriverController;
 
 import javax.swing.*;
@@ -19,11 +20,14 @@ public class DriverView extends JPanel {
     private JTable table1;
     private JScrollPane TbleD;
 
+    //This will be used to form the connection with the Controller Class
     private final DriverController driverController = new DriverController();
 
+    //This is the Table holding the values of the Schema or DB
     private final DefaultTableModel model = new DefaultTableModel(
             new String[]{"ID", "Name", "Licence", "Contact", "Status"}, 0
     ) {
+        //Overriding "isCelleditable = false" will stop users from typing into the cells
         @Override
         public boolean isCellEditable(int row, int column) {
             return false;
@@ -34,6 +38,7 @@ public class DriverView extends JPanel {
         setLayout(new BorderLayout());
         add(RootPanelD, BorderLayout.CENTER);
 
+        //Dis da table
         table1.setModel(model);
         table1.setRowHeight(32);
         table1.setFillsViewportHeight(true);
@@ -43,6 +48,7 @@ public class DriverView extends JPanel {
 
         btnDriverAdd.addActionListener(e -> openDialog());
 
+        //This is the All Important Search Function and document listener provides that
         SearchBoxD.getDocument().addDocumentListener(new DocumentListener() {
             public void insertUpdate(DocumentEvent e)  { refresh(); }
             public void removeUpdate(DocumentEvent e)  { refresh(); }
@@ -70,7 +76,7 @@ public class DriverView extends JPanel {
     }
 
     private void openDialog() {
-        AddDriverDialog dialog = new AddDriverDialog(SwingUtilities.getWindowAncestor(this));
+        AddDriverDialog dialog = new AddDriverDialog ((SwingUtilities.getWindowAncestor(this));
         dialog.setVisible(true);
 
         if (dialog.isSaved()) {
