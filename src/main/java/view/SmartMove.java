@@ -54,15 +54,9 @@ public class SmartMove {
         register(Trips, "Trips",
                 tripView, tripView::refresh);
 
-<<<<<<< HEAD
-        // Feedback
-=======
-        //It's me Thevan!                                             I want sleep
-        DriverView driverView = new DriverView();
+        driverView = new DriverView();
         register(Drivers, "Drivers", driverView, driverView::refresh);
 
-        // Feedback: borrow the panel from the teammate's JFrame
->>>>>>> 2f0e2ba1517bdd044b8a9c1823d7aec32f939d71
         FeedbackView feedbackView = new FeedbackView();
         JComponent feedbackPanel =
                 (JComponent) feedbackView.getContentPane();
