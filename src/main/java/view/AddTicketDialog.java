@@ -32,7 +32,6 @@ public class AddTicketDialog extends JDialog {
 
         SelectStatus.addItem("Booked");
         SelectStatus.addItem("Pending");
-        SelectStatus.addItem("Cancelled");
         loadPassengers();
         loadTrips();
 
