@@ -1,6 +1,5 @@
 package view;
 
-import com.mongodb.client.model.Window;
 import controller.DriverController;
 
 import javax.swing.*;
@@ -25,11 +24,11 @@ public class DriverView extends JPanel {
     private final DriverController driverController =
             new DriverController();
 
-    //This is the Table holding the values of the Schema or DB
+    // Table model holding the values from the DB
     private final DefaultTableModel model = new DefaultTableModel(
             new String[]{"ID", "Name", "Licence", "Contact", "Status"}, 0
     ) {
-        //Overriding "isCelleditable = false" will stop users from typing into the cells
+        // Stops users from typing into the cells
         @Override
         public boolean isCellEditable(int row, int column) {
             return false;
@@ -40,7 +39,6 @@ public class DriverView extends JPanel {
         setLayout(new BorderLayout());
         add(RootPanelD, BorderLayout.CENTER);
 
-        //Dis da table
         table1.setModel(model);
         table1.setRowHeight(32);
         table1.setFillsViewportHeight(true);
@@ -49,6 +47,7 @@ public class DriverView extends JPanel {
         table1.setForeground(Color.decode("#191A1C"));
 
         btnDriverAdd.addActionListener(e -> openDialog());
+
         SearchBoxD.getDocument().addDocumentListener(
                 new DocumentListener() {
                     @Override
@@ -67,11 +66,6 @@ public class DriverView extends JPanel {
                     }
                 }
         );
-        SearchBoxD.getDocument().addDocumentListener(new DocumentListener() {
-            public void insertUpdate(DocumentEvent e)  { refresh(); }
-            public void removeUpdate(DocumentEvent e)  { refresh(); }
-            public void changedUpdate(DocumentEvent e) { refresh(); }
-        });
 
         refresh();
     }
@@ -107,7 +101,6 @@ public class DriverView extends JPanel {
         AddDriverDialog dialog = new AddDriverDialog(
                 SwingUtilities.getWindowAncestor(this)
         );
-        AddDriverDialog dialog = new AddDriverDialog ((SwingUtilities.getWindowAncestor(this));
         dialog.setVisible(true);
 
         if (dialog.isSaved()) {
