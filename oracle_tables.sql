@@ -53,13 +53,15 @@ CREATE TABLE PAYMENT (
     amount NUMBER(10,2),
     payment_date DATE
 );
-CREATE TABLE MAINTENANCE (
-    maintenance_id NUMBER PRIMARY KEY,
-    vehicle_id NUMBER REFERENCES VEHICLE(vehicle_id),
-    maintenance_date DATE,
-    maintenance_type VARCHAR2(50),
-    cost NUMBER(10,2),
-    next_due_date DATE
+CREATE TABLE MAINTENANCE
+(
+    maintenance_id     NUMBER PRIMARY KEY,
+    vehicle_id         NUMBER REFERENCES VEHICLE (vehicle_id),
+    maintenance_date   DATE,
+    maintenance_type   VARCHAR2(50),
+    cost               NUMBER(10,2),
+    next_due_date      DATE,
+    maintenance_status VARCHAR2(20) DEFAULT 'Planned' NOT NULL
 );
 -- insertion
 INSERT INTO VEHICLE VALUES (1, 'Bus', 'V001', 40, 'Active');
@@ -93,8 +95,8 @@ INSERT INTO PAYMENT VALUES (1, 1, 1200.00, DATE '2026-09-10');
 INSERT INTO PAYMENT VALUES (2, 2, 1500.00, DATE '2026-09-12');
 INSERT INTO PAYMENT VALUES (3, 3, 2000.00, DATE '2026-09-14');
 
-INSERT INTO MAINTENANCE VALUES (1, 3, DATE '2026-09-05', 'Engine Service', 5000.00, DATE '2026-12-05');
-INSERT INTO MAINTENANCE VALUES (2, 1, DATE '2026-08-20', 'Tire Change', 1500.00, DATE '2027-02-20');
+INSERT INTO MAINTENANCE VALUES (1, 3, DATE '2026-09-05', 'Engine Service', 5000.00, DATE '2026-12-05', 'Completed');
+INSERT INTO MAINTENANCE VALUES (2, 1, DATE '2026-08-20', 'Tire Change', 1500.00, DATE '2027-02-20', 'Completed');
 
 -- reports using PSQL and SYS_REFCURSOR, 
 -- jasper reports too complicated to setup rn, though i think this is what we want either way??

@@ -37,7 +37,7 @@ public class SmartMove {
         // Drivers
         DriverView driverView = new DriverView();
         register(Drivers, "Drivers",
-                driverView.getRootPanel(), driverView::refresh);
+                driverView.getRootPane(), driverView::refresh);
 
         // Passengers
         PassengerView passengerView = new PassengerView();
@@ -68,8 +68,8 @@ public class SmartMove {
         register(Vehicles, "Vehicles",
                 placeholder("Vehicle Management"));
 
-        register(Maintenance, "Maintenance",
-                placeholder("Maintenance"));
+        MaintenanceView maintenanceView = new MaintenanceView();
+        register(Maintenance, "Maintenance", maintenanceView, maintenanceView::refresh);
 
         // Show the Routes screen at startup
         cards.show(contentPanel, "Routes");
