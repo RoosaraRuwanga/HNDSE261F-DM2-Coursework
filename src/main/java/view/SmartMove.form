@@ -3,7 +3,7 @@
   <grid id="27dc6" binding="panel1" default-binding="true" layout-manager="GridLayoutManager" row-count="1" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
     <margin top="0" left="0" bottom="0" right="0"/>
     <constraints>
-      <xy x="20" y="20" width="500" height="664"/>
+      <xy x="20" y="20" width="500" height="726"/>
     </constraints>
     <properties>
       <background color="-12183780"/>
@@ -11,7 +11,7 @@
     </properties>
     <border type="none"/>
     <children>
-      <grid id="182b5" binding="navigationPanel" layout-manager="GridLayoutManager" row-count="14" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="8">
+      <grid id="182b5" binding="navigationPanel" layout-manager="GridLayoutManager" row-count="15" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="8">
         <margin top="16" left="16" bottom="16" right="16"/>
         <constraints>
           <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false">
@@ -113,7 +113,7 @@
           </component>
           <vspacer id="a5574">
             <constraints>
-              <grid row="13" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+              <grid row="14" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
             </constraints>
           </vspacer>
           <component id="b5aa5" class="javax.swing.JButton" binding="Feedbacks">
@@ -196,6 +196,23 @@
               <horizontalTextPosition value="0"/>
               <name value="Smart Move"/>
               <text value="Smart Move"/>
+            </properties>
+          </component>
+          <component id="d12b3" class="javax.swing.JButton" binding="Reports">
+            <constraints>
+              <grid row="10" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="3" indent="0" use-parent-layout="false">
+                <minimum-size width="-1" height="50"/>
+                <preferred-size width="-1" height="50"/>
+              </grid>
+            </constraints>
+            <properties>
+              <autoscrolls value="false"/>
+              <background color="-5425857"/>
+              <enabled value="true"/>
+              <focusable value="false"/>
+              <foreground color="-7973"/>
+              <label value="Reports"/>
+              <text value="Reports"/>
             </properties>
           </component>
         </children>

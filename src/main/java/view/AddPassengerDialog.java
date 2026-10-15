@@ -1,8 +1,15 @@
 
 package view;
 
+import com.intellij.uiDesigner.core.GridConstraints;
+import com.intellij.uiDesigner.core.GridLayoutManager;
+import com.intellij.uiDesigner.core.Spacer;
+
 import javax.swing.*;
+import javax.swing.plaf.FontUIResource;
+import javax.swing.text.StyleContext;
 import java.awt.*;
+import java.util.Locale;
 
 public class AddPassengerDialog extends JDialog {
 
@@ -18,7 +25,7 @@ public class AddPassengerDialog extends JDialog {
 
     // Add mode
     public AddPassengerDialog(Window owner) {
-        super(owner, "Add passenger", Dialog.ModalityType.APPLICATION_MODAL);
+        super(owner, "Add passenger", ModalityType.APPLICATION_MODAL);
 
         setContentPane(rootPanel);
 
@@ -113,4 +120,5 @@ public class AddPassengerDialog extends JDialog {
     public int getTickets() {
         return Integer.parseInt(txtTickets.getText().trim());
     }
+
 }

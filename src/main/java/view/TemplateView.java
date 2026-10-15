@@ -1,6 +1,14 @@
 package view;
 
+import com.intellij.uiDesigner.core.GridConstraints;
+import com.intellij.uiDesigner.core.GridLayoutManager;
+import com.intellij.uiDesigner.core.Spacer;
+
 import javax.swing.*;
+import javax.swing.plaf.FontUIResource;
+import javax.swing.text.StyleContext;
+import java.awt.*;
+import java.util.Locale;
 
 public class TemplateView extends JFrame {
     private JPanel MainPanel;
@@ -16,7 +24,8 @@ public class TemplateView extends JFrame {
         setVisible(true);
     }
 
-    public static void main(String[] args){
+    public static void main(String[] args) {
         new TemplateView();
     }
+
 }

@@ -1,8 +1,16 @@
 package view;
 
 import javax.swing.*;
+import javax.swing.border.TitledBorder;
+import javax.swing.plaf.FontUIResource;
+import javax.swing.text.StyleContext;
+import java.awt.*;
 import java.sql.Date;
 import java.sql.SQLException;
+import java.util.Locale;
+
+import com.jgoodies.forms.layout.CellConstraints;
+import com.jgoodies.forms.layout.FormLayout;
 import controller.ReportController;
 
 public class ReportView extends JFrame {
@@ -25,7 +33,7 @@ public class ReportView extends JFrame {
         setSize(1280, 720);
         setContentPane(MainPanel);
         setLocationRelativeTo(null);
-        setVisible(true);
+        //setVisible(true);
 
         btnReport_PopRoutes.addActionListener(e -> {
             try {
@@ -80,8 +88,22 @@ public class ReportView extends JFrame {
 
     }
 
-    public static void main(String[] args){
+    public static void main(String[] args) {
         new ReportView();
+    }
+
+    // added so SmartMove can place this screen in its content panel
+    public JPanel getRootPanel() {
+        return MainPanel;
+    }
+
+    // added so SmartMove can reload the table when the Tickets button is clicked
+    public void refresh() {
+        loadData();
+    }
+
+    private void loadData() {
+        //runSelectedReport();   // your existing method that calls the procedure
     }
 
 }

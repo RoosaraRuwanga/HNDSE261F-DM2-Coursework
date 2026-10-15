@@ -1,15 +1,20 @@
 package view;
 
+import com.intellij.uiDesigner.core.GridConstraints;
+import com.intellij.uiDesigner.core.GridLayoutManager;
 import controller.MaintenanceController;
 import controller.MaintenanceController.Maintenance;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.plaf.FontUIResource;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.text.StyleContext;
 import java.awt.*;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Locale;
 
 public class MaintenanceView extends JPanel {
     private JPanel RootPanelM;
@@ -48,11 +53,19 @@ public class MaintenanceView extends JPanel {
         // Live search: reloads the table every time the text changes
         SearchBoxM.getDocument().addDocumentListener(new DocumentListener() {
             @Override
-            public void insertUpdate(DocumentEvent e)  { refresh(); }
+            public void insertUpdate(DocumentEvent e) {
+                refresh();
+            }
+
             @Override
-            public void removeUpdate(DocumentEvent e)  { refresh(); }
+            public void removeUpdate(DocumentEvent e) {
+                refresh();
+            }
+
             @Override
-            public void changedUpdate(DocumentEvent e) { refresh(); }
+            public void changedUpdate(DocumentEvent e) {
+                refresh();
+            }
         });
 
         refresh();
@@ -103,4 +116,9 @@ public class MaintenanceView extends JPanel {
                     "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
+
+    public JPanel getRootPanel() {
+        return RootPanelM;
+    }
+
 }

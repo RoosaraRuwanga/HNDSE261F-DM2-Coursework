@@ -1,7 +1,13 @@
 package view;
 
 import javax.swing.*;
+
+import com.intellij.uiDesigner.core.GridConstraints;
+import com.intellij.uiDesigner.core.GridLayoutManager;
+import com.intellij.uiDesigner.core.Spacer;
 import data.OracleConnector;
+
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
@@ -39,6 +45,7 @@ public class AddPaymentDialog extends JDialog {
             }
         });
     }
+
     private void loadUnpaidTickets() {
         Connection conn = null;
         Statement stmt = null;
@@ -54,11 +61,9 @@ public class AddPaymentDialog extends JDialog {
                 selectTicket.addItem(rs.getString("ticket_id"));
             }
 
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Error loading unpaid tickets: " + e.getMessage());
-        }
-        finally {
+        } finally {
             closeConnections(conn, stmt, rs);
         }
     }
@@ -85,14 +90,11 @@ public class AddPaymentDialog extends JDialog {
             JOptionPane.showMessageDialog(this, "Payment Recorded Successfully!");
             dispose();
 
-        }
-        catch (NumberFormatException nfe) {
+        } catch (NumberFormatException nfe) {
             JOptionPane.showMessageDialog(this, "Please enter a valid numeric value for the Amount.");
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Database Error: " + e.getMessage());
-        }
-        finally {
+        } finally {
             closeConnections(conn, pstmt, null);
         }
     }
@@ -103,8 +105,8 @@ public class AddPaymentDialog extends JDialog {
             if (r != null) r.close();
             if (s != null) s.close();
             if (c != null) c.close();
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
         }
     }
+
 }

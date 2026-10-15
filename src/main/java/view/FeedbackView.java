@@ -1,10 +1,17 @@
 package view;
 
+import com.intellij.uiDesigner.core.GridConstraints;
+import com.intellij.uiDesigner.core.GridLayoutManager;
+import com.intellij.uiDesigner.core.Spacer;
 import controller.FeedbackController;
 import javax.swing.*;
+import javax.swing.plaf.FontUIResource;
+import javax.swing.text.StyleContext;
+import java.awt.*;
 import java.sql.SQLException;
+import java.util.Locale;
 
-public class FeedbackView extends JFrame{
+public class FeedbackView extends JFrame {
     private JPanel MainPanel;
     private JLabel LabelTitle;
     private JSpinner spnPID;
@@ -29,7 +36,7 @@ public class FeedbackView extends JFrame{
         setSize(1280, 720);
         setContentPane(MainPanel);
         setLocationRelativeTo(null);
-        setVisible(true);
+        //setVisible(true);
 
 
         // force spinner to be 1 - 5 stars
@@ -40,8 +47,7 @@ public class FeedbackView extends JFrame{
 
             if (rating < 1) {
                 rating = 1;
-            }
-            else if (rating > 5) {
+            } else if (rating > 5) {
                 rating = 5;
             }
             spnRating.setValue(rating);
@@ -85,7 +91,9 @@ public class FeedbackView extends JFrame{
         });
 
     }
-    public static void main(String[] args){
+
+    public static void main(String[] args) {
         new FeedbackView();
     }
+
 }

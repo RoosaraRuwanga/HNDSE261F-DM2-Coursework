@@ -1,15 +1,19 @@
 
 package view;
 
+import com.intellij.uiDesigner.core.GridConstraints;
+import com.intellij.uiDesigner.core.GridLayoutManager;
 import controller.RouteController;
 import controller.RouteController.Route;
 
 import javax.swing.*;
+import javax.swing.plaf.FontUIResource;
 import javax.swing.table.DefaultTableModel;
-import java.awt.BorderLayout;
-import java.awt.Color;
+import javax.swing.text.StyleContext;
+import java.awt.*;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Locale;
 
 public class RouteView extends JPanel {
 
@@ -78,4 +82,5 @@ public class RouteView extends JPanel {
             );
         }
     }
+
 }

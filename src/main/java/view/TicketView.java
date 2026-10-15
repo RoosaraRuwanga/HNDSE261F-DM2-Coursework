@@ -1,9 +1,14 @@
 package view;
 
+import com.intellij.uiDesigner.core.GridConstraints;
+import com.intellij.uiDesigner.core.GridLayoutManager;
 import data.OracleConnector;
 
 import javax.swing.*;
+import javax.swing.plaf.FontUIResource;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.text.StyleContext;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
@@ -11,6 +16,7 @@ import java.awt.event.KeyEvent;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.Locale;
 
 public class TicketView {
     private JTextField txtSearchTicket;
@@ -19,7 +25,7 @@ public class TicketView {
     private JButton addTicketsButton;
     private JButton btnChangeStatus;
 
-    public TicketView(){
+    public TicketView() {
         String[] columns = {"ID", "Passenger ID", "Trip ID", "Seat", "Status"};
         DefaultTableModel model = new DefaultTableModel(columns, 0);
         tblTickets.setModel(model);
@@ -54,7 +60,7 @@ public class TicketView {
         });
     }
 
-    public void loadData(){
+    public void loadData() {
         DefaultTableModel model = (DefaultTableModel) tblTickets.getModel();
         model.setRowCount(0);
 
@@ -62,7 +68,7 @@ public class TicketView {
         Statement stmt = null;
         ResultSet rs = null;
 
-        try{
+        try {
             conn = OracleConnector.getConnection();
             stmt = conn.createStatement();
             String searchText = txtSearchTicket.getText();
@@ -75,7 +81,7 @@ public class TicketView {
             }
             rs = stmt.executeQuery(sql);
 
-            while(rs.next()){
+            while (rs.next()) {
                 int id = rs.getInt("ticket_id");
                 int passenger = rs.getInt("passenger_id");
                 int trip = rs.getInt("trip_id");
@@ -85,11 +91,9 @@ public class TicketView {
                 model.addRow(row);
             }
 
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Database Error: " + e.getMessage());
-        }
-        finally {
+        } finally {
             try {
                 if (rs != null) rs.close();
                 if (stmt != null) stmt.close();
@@ -117,4 +121,5 @@ public class TicketView {
     public void refresh() {
         loadData();
     }
+
 }

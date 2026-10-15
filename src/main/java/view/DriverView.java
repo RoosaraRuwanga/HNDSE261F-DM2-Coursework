@@ -1,15 +1,20 @@
 package view;
 
+import com.intellij.uiDesigner.core.GridConstraints;
+import com.intellij.uiDesigner.core.GridLayoutManager;
 import controller.DriverController;
 import controller.DriverController.Driver;     // YOUR Driver class
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.plaf.FontUIResource;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.text.StyleContext;
 import java.awt.*;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Locale;
 
 public class DriverView extends JPanel {
     private JPanel RootPanelD;
@@ -50,9 +55,17 @@ public class DriverView extends JPanel {
 
         //This is the All Important Search Function and document listener provides that
         SearchBoxD.getDocument().addDocumentListener(new DocumentListener() {
-            public void insertUpdate(DocumentEvent e)  { refresh(); }
-            public void removeUpdate(DocumentEvent e)  { refresh(); }
-            public void changedUpdate(DocumentEvent e) { refresh(); }
+            public void insertUpdate(DocumentEvent e) {
+                refresh();
+            }
+
+            public void removeUpdate(DocumentEvent e) {
+                refresh();
+            }
+
+            public void changedUpdate(DocumentEvent e) {
+                refresh();
+            }
         });
 
         refresh();
@@ -76,12 +89,17 @@ public class DriverView extends JPanel {
     }
 
     private void openDialog() {
-        AddDriverDialog dialog = new AddDriverDialog (SwingUtilities.getWindowAncestor(this));
+        AddDriverDialog dialog = new AddDriverDialog(SwingUtilities.getWindowAncestor(this));
         dialog.setVisible(true);
 
         if (dialog.isSaved()) {
             refresh();
         }
     }
+
+    public JPanel getRootPanel() {
+        return RootPanelD;
+    }
+
 }
 

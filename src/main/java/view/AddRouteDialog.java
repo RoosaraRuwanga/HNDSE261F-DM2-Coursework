@@ -1,10 +1,16 @@
 package view;
 
+import com.intellij.uiDesigner.core.GridConstraints;
+import com.intellij.uiDesigner.core.GridLayoutManager;
+import com.intellij.uiDesigner.core.Spacer;
 import data.OracleConnector;
 
 import javax.swing.*;
-import java.awt.Window;
+import javax.swing.plaf.FontUIResource;
+import javax.swing.text.StyleContext;
+import java.awt.*;
 import java.sql.*;
+import java.util.Locale;
 
 public class AddRouteDialog extends JDialog {
     private JPanel RootPanel;
@@ -79,4 +85,5 @@ public class AddRouteDialog extends JDialog {
     private void error(String msg) {
         JOptionPane.showMessageDialog(this, msg, "Error", JOptionPane.ERROR_MESSAGE);
     }
+
 }

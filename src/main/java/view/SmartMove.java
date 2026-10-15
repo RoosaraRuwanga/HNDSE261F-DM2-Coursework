@@ -1,7 +1,14 @@
 package view;
 
+import com.intellij.uiDesigner.core.GridConstraints;
+import com.intellij.uiDesigner.core.GridLayoutManager;
+import com.intellij.uiDesigner.core.Spacer;
+
 import javax.swing.*;
+import javax.swing.plaf.FontUIResource;
+import javax.swing.text.StyleContext;
 import java.awt.*;
+import java.util.Locale;
 
 public class SmartMove {
     private JPanel panel1;
@@ -16,6 +23,7 @@ public class SmartMove {
     private JButton Passengers;
     private JButton Tickets;
     private JButton Payments;
+    private JButton Reports;
     private JLabel SmartMove;
 
     private final CardLayout cards = new CardLayout();
@@ -29,6 +37,11 @@ public class SmartMove {
         register(Tickets, "Tickets",
                 ticketView.getRootPanel(), ticketView::refresh);
 
+        // Maintenance
+        MaintenanceView maintenanceView = new MaintenanceView();
+        register(Maintenance, "Maintenance",
+                maintenanceView.getRootPanel(), maintenanceView::refresh);
+
         // Payments
         PaymentView paymentView = new PaymentView();
         register(Payments, "Payments",
@@ -37,7 +50,7 @@ public class SmartMove {
         // Drivers
         DriverView driverView = new DriverView();
         register(Drivers, "Drivers",
-                driverView.getRootPane(), driverView::refresh);
+                driverView.getRootPanel(), driverView::refresh);
 
         // Passengers
         PassengerView passengerView = new PassengerView();
@@ -52,11 +65,19 @@ public class SmartMove {
         // Trips
         TripView tripView = new TripView();
         register(Trips, "Trips",
-                tripView.getRootPanel(), tripView::refresh);
+                tripView, tripView::refresh);
 
+        // Vehicles
         VehicleView vehicleView = new VehicleView();
-        register(Vehicles, "Vehicles", vehicleView.getRootPanel(), vehicleView::refresh);
+        register(Vehicles, "Vehicles",
+                vehicleView.getRootPanel(), vehicleView::refresh);
 
+        // Reports
+        ReportView reportView = new ReportView();
+        register(Reports, "Reports",
+                reportView.getRootPanel(), reportView::refresh);
+
+        // Feedback
         FeedbackView feedbackView = new FeedbackView();
         JComponent feedbackPanel =
                 (JComponent) feedbackView.getContentPane();
@@ -64,15 +85,9 @@ public class SmartMove {
 
         register(Feedbacks, "Feedback", feedbackPanel);
 
-        // Placeholders for screens not yet implemented
-        register(Vehicles, "Vehicles",
-                placeholder("Vehicle Management"));
-
-        MaintenanceView maintenanceView = new MaintenanceView();
-        register(Maintenance, "Maintenance", maintenanceView, maintenanceView::refresh);
-
-        // Show the Routes screen at startup
-        cards.show(contentPanel, "Routes");
+        // Show the Vehicles screen at startup
+        vehicleView.refresh();
+        cards.show(contentPanel, "Vehicles");
 
         contentPanel.revalidate();
         contentPanel.repaint();
@@ -132,4 +147,5 @@ public class SmartMove {
             frame.setVisible(true);
         });
     }
+
 }

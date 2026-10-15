@@ -1,11 +1,16 @@
 package view;
 
+import com.intellij.uiDesigner.core.GridConstraints;
+import com.intellij.uiDesigner.core.GridLayoutManager;
 import controller.MaintenanceController;
 
 import javax.swing.*;
-import java.awt.Window;
+import javax.swing.plaf.FontUIResource;
+import javax.swing.text.StyleContext;
+import java.awt.*;
 import java.sql.Date;
 import java.sql.SQLException;
+import java.util.Locale;
 
 public class AddMaintenanceDialog extends JDialog {
     private JPanel RootPanelMD;
@@ -108,4 +113,5 @@ public class AddMaintenanceDialog extends JDialog {
     private void error(String msg) {
         JOptionPane.showMessageDialog(this, msg, "Error", JOptionPane.ERROR_MESSAGE);
     }
+
 }

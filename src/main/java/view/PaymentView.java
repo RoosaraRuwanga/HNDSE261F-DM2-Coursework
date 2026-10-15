@@ -1,8 +1,13 @@
 package view;
 
+import com.intellij.uiDesigner.core.GridConstraints;
+import com.intellij.uiDesigner.core.GridLayoutManager;
 import data.OracleConnector;
 import javax.swing.*;
+import javax.swing.plaf.FontUIResource;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.text.StyleContext;
+import java.awt.*;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
@@ -10,6 +15,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.util.Locale;
 
 public class PaymentView {
     private JButton btnAddPayment;
@@ -73,29 +79,26 @@ public class PaymentView {
                 model.addRow(row);
             }
 
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Database Error: " + e.getMessage());
-        }
-        finally {
+        } finally {
             try {
                 if (rs != null) rs.close();
                 if (stmt != null) stmt.close();
                 if (conn != null) conn.close();
-            }
-            catch (Exception ex) {
+            } catch (Exception ex) {
             }
         }
     }
     //temporary main method for testing
     //public static void main(String[] args) {
-       // JFrame frame = new JFrame("PaymentView");
-       // PaymentView viewInstance = new PaymentView();
-       // frame.setContentPane(viewInstance.Panel);
-       // frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-      //  frame.pack();
-      //  frame.setVisible(true);
-   // }
+    // JFrame frame = new JFrame("PaymentView");
+    // PaymentView viewInstance = new PaymentView();
+    // frame.setContentPane(viewInstance.Panel);
+    // frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    //  frame.pack();
+    //  frame.setVisible(true);
+    // }
 
     // added so SmartMove can place this screen in its content panel
     public JPanel getRootPanel() {
@@ -106,4 +109,5 @@ public class PaymentView {
     public void refresh() {
         loadData();
     }
+
 }

@@ -1,6 +1,7 @@
 package view;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
@@ -8,6 +9,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
+
+import com.intellij.uiDesigner.core.GridConstraints;
+import com.intellij.uiDesigner.core.GridLayoutManager;
+import com.intellij.uiDesigner.core.Spacer;
 import data.OracleConnector;
 
 public class AddTicketDialog extends JDialog {
@@ -171,11 +176,9 @@ public class AddTicketDialog extends JDialog {
             pstmt.executeUpdate();
             JOptionPane.showMessageDialog(this, "Ticket Successfully Booked!");
             dispose();
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Database Error: " + e.getMessage());
-        }
-        finally {
+        } finally {
             closeConnections(conn, pstmt, rs);
         }
     }
@@ -185,8 +188,8 @@ public class AddTicketDialog extends JDialog {
             if (r != null) r.close();
             if (s != null) s.close();
             if (c != null) c.close();
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
         }
     }
+
 }

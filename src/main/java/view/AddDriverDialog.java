@@ -1,10 +1,15 @@
 package view;
 
+import com.intellij.uiDesigner.core.GridConstraints;
+import com.intellij.uiDesigner.core.GridLayoutManager;
 import controller.DriverController;
 
 import javax.swing.*;
-import java.awt.Window;
+import javax.swing.plaf.FontUIResource;
+import javax.swing.text.StyleContext;
+import java.awt.*;
 import java.sql.SQLException;
+import java.util.Locale;
 
 public class AddDriverDialog extends JDialog {
 
@@ -78,4 +83,5 @@ public class AddDriverDialog extends JDialog {
                 JOptionPane.ERROR_MESSAGE
         );
     }
+
 }

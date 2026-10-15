@@ -1,16 +1,20 @@
 package view;
 
+import com.intellij.uiDesigner.core.GridConstraints;
+import com.intellij.uiDesigner.core.GridLayoutManager;
+import com.intellij.uiDesigner.core.Spacer;
 import data.OracleConnector;
 
 import javax.swing.*;
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Window;
+import javax.swing.plaf.FontUIResource;
+import javax.swing.text.StyleContext;
+import java.awt.*;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Locale;
 
 public class AddTripDialog extends JDialog {
 
@@ -246,11 +250,26 @@ public class AddTripDialog extends JDialog {
         String status = (String) cmbStatus.getSelectedItem();
 
         // Validation
-        if (route == null) { showError("Please select a route."); return; }
-        if (vehicle == null) { showError("Please select a vehicle."); return; }
-        if (driver == null) { showError("Please select a driver."); return; }
-        if (dateText.isEmpty()) { showError("Please enter a trip date."); return; }
-        if (status == null || status.isEmpty()) { showError("Please select a status."); return; }
+        if (route == null) {
+            showError("Please select a route.");
+            return;
+        }
+        if (vehicle == null) {
+            showError("Please select a vehicle.");
+            return;
+        }
+        if (driver == null) {
+            showError("Please select a driver.");
+            return;
+        }
+        if (dateText.isEmpty()) {
+            showError("Please enter a trip date.");
+            return;
+        }
+        if (status == null || status.isEmpty()) {
+            showError("Please select a status.");
+            return;
+        }
 
         Date tripDate;
         try {

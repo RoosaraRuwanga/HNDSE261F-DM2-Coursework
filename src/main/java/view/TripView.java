@@ -1,18 +1,21 @@
 
 package view;
 
+import com.intellij.uiDesigner.core.GridConstraints;
+import com.intellij.uiDesigner.core.GridLayoutManager;
 import controller.TripController;
 import controller.TripController.Trip;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.plaf.FontUIResource;
 import javax.swing.table.DefaultTableModel;
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Window;
+import javax.swing.text.StyleContext;
+import java.awt.*;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Locale;
 
 public class TripView extends JPanel {
 
@@ -127,6 +130,7 @@ public class TripView extends JPanel {
             );
         }
     }
+
     // added so SmartMove can place this screen in its content panel
     public JPanel getRootPanel() {
         return RootPlan;

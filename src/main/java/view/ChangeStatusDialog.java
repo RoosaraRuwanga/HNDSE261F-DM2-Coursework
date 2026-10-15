@@ -1,7 +1,13 @@
 package view;
 
 import javax.swing.*;
+
+import com.intellij.uiDesigner.core.GridConstraints;
+import com.intellij.uiDesigner.core.GridLayoutManager;
+import com.intellij.uiDesigner.core.Spacer;
 import data.OracleConnector;
+
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
@@ -42,6 +48,7 @@ public class ChangeStatusDialog extends JDialog {
             }
         });
     }
+
     private void loadTicketIds() {
         Connection conn = null;
         Statement stmt = null;
@@ -57,11 +64,9 @@ public class ChangeStatusDialog extends JDialog {
             while (rs.next()) {
                 selectTicket.addItem(rs.getString("ticket_id"));
             }
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Error loading Ticket IDs: " + e.getMessage());
-        }
-        finally {
+        } finally {
             closeConnections(conn, stmt, rs);
         }
     }
@@ -88,11 +93,9 @@ public class ChangeStatusDialog extends JDialog {
                 JOptionPane.showMessageDialog(this, "Ticket Status Updated Successfully!");
             }
             dispose();
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Database Error: " + e.getMessage());
-        }
-        finally {
+        } finally {
             closeConnections(conn, pstmt, null);
         }
     }
@@ -102,8 +105,8 @@ public class ChangeStatusDialog extends JDialog {
             if (r != null) r.close();
             if (s != null) s.close();
             if (c != null) c.close();
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
         }
     }
+
 }

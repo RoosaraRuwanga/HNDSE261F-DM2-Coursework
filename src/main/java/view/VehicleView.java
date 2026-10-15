@@ -1,15 +1,20 @@
 package view;
 
+import com.intellij.uiDesigner.core.GridConstraints;
+import com.intellij.uiDesigner.core.GridLayoutManager;
 import controller.VehicleController;
 import controller.VehicleController.Vehicle;    // This lets you write just "Vehicle" which I spent 30mins on for this bugfix
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.plaf.FontUIResource;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.text.StyleContext;
 import java.awt.*;
 import java.util.List;
 import java.sql.SQLException;
+import java.util.Locale;
 
 public class VehicleView extends JPanel {
     private JPanel RootPanelV;
@@ -50,11 +55,19 @@ public class VehicleView extends JPanel {
         //All string is stored in a document and this form fetches allat info and documentlistener catches any changes
         SearchBoxV.getDocument().addDocumentListener(new DocumentListener() {
             @Override
-            public void insertUpdate(DocumentEvent e) { refresh(); }
+            public void insertUpdate(DocumentEvent e) {
+                refresh();
+            }
+
             @Override
-            public void removeUpdate(DocumentEvent e) { refresh(); }
+            public void removeUpdate(DocumentEvent e) {
+                refresh();
+            }
+
             @Override
-            public void changedUpdate(DocumentEvent e) { refresh(); }
+            public void changedUpdate(DocumentEvent e) {
+                refresh();
+            }
         });
 
         refresh();
@@ -110,4 +123,9 @@ public class VehicleView extends JPanel {
             );
         }
     }
+
+    public JPanel getRootPanel() {
+        return RootPanelV;
+    }
+
 }

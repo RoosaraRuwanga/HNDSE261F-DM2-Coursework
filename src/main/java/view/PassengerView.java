@@ -1,26 +1,24 @@
 package view;
 
+import com.intellij.uiDesigner.core.GridConstraints;
+import com.intellij.uiDesigner.core.GridLayoutManager;
 import data.OracleConnector;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.plaf.FontUIResource;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Component;
+import javax.swing.text.StyleContext;
+import java.awt.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 import java.util.function.IntConsumer;
 
 public class PassengerView extends JPanel {
@@ -56,9 +54,17 @@ public class PassengerView extends JPanel {
         table1.setForeground(Color.decode("#191A1C"));
 
         searchBoxTextField.getDocument().addDocumentListener(new DocumentListener() {
-            public void insertUpdate(DocumentEvent e)  { refresh(); }
-            public void removeUpdate(DocumentEvent e)  { refresh(); }
-            public void changedUpdate(DocumentEvent e) { refresh(); }
+            public void insertUpdate(DocumentEvent e) {
+                refresh();
+            }
+
+            public void removeUpdate(DocumentEvent e) {
+                refresh();
+            }
+
+            public void changedUpdate(DocumentEvent e) {
+                refresh();
+            }
         });
 
         addPassengerButton.addActionListener(e -> showAddDialog());
@@ -85,7 +91,10 @@ public class PassengerView extends JPanel {
                 String name = rs.getString(2);
                 String contact = rs.getString(3);
                 String[] edit = edits.get(id);
-                if (edit != null) { name = edit[0]; contact = edit[1]; }   // edited in this session
+                if (edit != null) {
+                    name = edit[0];
+                    contact = edit[1];
+                }   // edited in this session
                 if (name == null) name = "";
 
                 if (name.toLowerCase().contains(term)) {
@@ -223,7 +232,9 @@ public class PassengerView extends JPanel {
         return null;
     }
 
-    /** Puts a clickable button in every row of one table column. */
+    /**
+     * Puts a clickable button in every row of one table column.
+     */
     private static class ButtonColumn extends AbstractCellEditor
             implements TableCellRenderer, TableCellEditor {
 
@@ -262,6 +273,9 @@ public class PassengerView extends JPanel {
             return editorButton;
         }
 
-        @Override public Object getCellEditorValue() { return ""; }
+        @Override
+        public Object getCellEditorValue() {
+            return "";
+        }
     }
 }
