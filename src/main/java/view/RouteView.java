@@ -1,19 +1,16 @@
 
 package view;
 
-import com.intellij.uiDesigner.core.GridConstraints;
-import com.intellij.uiDesigner.core.GridLayoutManager;
 import controller.RouteController;
 import controller.RouteController.Route;
 
 import javax.swing.*;
-import javax.swing.plaf.FontUIResource;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.text.StyleContext;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import java.util.List;
-import java.util.Locale;
 
 public class RouteView extends JPanel {
 
@@ -21,6 +18,9 @@ public class RouteView extends JPanel {
     private JButton button1;
     private JTextField txtroute;
     private JTable table1;
+    private JLabel lblSearch;
+    private JButton btnDeleteRoute;
+    private JButton btnEditRoute;
 
     private final RouteController routeController = new RouteController();
 
@@ -51,6 +51,26 @@ public class RouteView extends JPanel {
             dialog.setVisible(true);
 
             if (dialog.isSaved()) {
+                refresh();
+            }
+        });
+
+        btnEditRoute.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                EditRoute dialog = new EditRoute();
+                dialog.pack();
+                dialog.setVisible(true);
+                refresh();
+            }
+        });
+
+        btnDeleteRoute.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                DeleteRoute dialog = new DeleteRoute();
+                dialog.pack();
+                dialog.setVisible(true);
                 refresh();
             }
         });

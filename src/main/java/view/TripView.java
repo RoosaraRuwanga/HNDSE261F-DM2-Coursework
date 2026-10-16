@@ -1,21 +1,16 @@
 
 package view;
 
-import com.intellij.uiDesigner.core.GridConstraints;
-import com.intellij.uiDesigner.core.GridLayoutManager;
 import controller.TripController;
 import controller.TripController.Trip;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import javax.swing.plaf.FontUIResource;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.text.StyleContext;
 import java.awt.*;
 import java.sql.SQLException;
 import java.util.List;
-import java.util.Locale;
 
 public class TripView extends JPanel {
 
@@ -23,6 +18,9 @@ public class TripView extends JPanel {
     private JButton addTripButton;
     private JTextField txttrip;
     private JTable table1;
+    private JLabel lblSearch;
+    private JButton btnEditTrip;
+    private JButton btnDeleteTrip;
 
     private final TripController tripController = new TripController();
 
@@ -53,8 +51,28 @@ public class TripView extends JPanel {
         table1.setGridColor(Color.decode("#828C9B"));
         table1.setForeground(Color.decode("#191A1C"));
 
-        // Open the Add Trip dialog
+
         addTripButton.addActionListener(e -> openDialog());
+
+        btnEditTrip.addActionListener(new java.awt.event.ActionListener() {
+            @Override
+            public void actionPerformed(java.awt.event.ActionEvent e) {
+                EditTripDialog dialog = new EditTripDialog();
+                dialog.pack();
+                dialog.setVisible(true);
+                refresh();
+            }
+        });
+
+        btnDeleteTrip.addActionListener(new java.awt.event.ActionListener() {
+            @Override
+            public void actionPerformed(java.awt.event.ActionEvent e) {
+                DeleteTripDialog dialog = new DeleteTripDialog();
+                dialog.pack();
+                dialog.setVisible(true);
+                refresh();
+            }
+        });
 
         // Search whenever the search text changes
         txttrip.getDocument().addDocumentListener(new DocumentListener() {

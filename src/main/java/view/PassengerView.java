@@ -1,18 +1,16 @@
 package view;
 
-import com.intellij.uiDesigner.core.GridConstraints;
-import com.intellij.uiDesigner.core.GridLayoutManager;
 import data.OracleConnector;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import javax.swing.plaf.FontUIResource;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
-import javax.swing.text.StyleContext;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -27,6 +25,9 @@ public class PassengerView extends JPanel {
     private JTextField searchBoxTextField;
     private JPanel rootPanel;
     private JTable table1;
+    private JLabel lblSearch;
+    private JButton editPassengerButton;
+    private JButton removePassengerButton;
 
     // columns 4 and 5 hold the Edit and Delete buttons
     private final DefaultTableModel model = new DefaultTableModel(
@@ -68,6 +69,25 @@ public class PassengerView extends JPanel {
         });
 
         addPassengerButton.addActionListener(e -> showAddDialog());
+        editPassengerButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                EditPassengerDialog dialog = new EditPassengerDialog();
+                dialog.pack();
+                dialog.setVisible(true);
+                refresh();
+            }
+        });
+
+        removePassengerButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                RemovePassengerDialog dialog = new RemovePassengerDialog();
+                dialog.pack();
+                dialog.setVisible(true);
+                refresh();
+            }
+        });
         refresh();
     }
 

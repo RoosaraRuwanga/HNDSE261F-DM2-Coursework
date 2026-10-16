@@ -24,11 +24,17 @@ public class TicketView {
     private JPanel RootPanel;
     private JButton addTicketsButton;
     private JButton btnChangeStatus;
+    private JLabel lblSearchTickets;
 
     public TicketView() {
         String[] columns = {"ID", "Passenger ID", "Trip ID", "Seat", "Status"};
         DefaultTableModel model = new DefaultTableModel(columns, 0);
         tblTickets.setModel(model);
+        tblTickets.setRowHeight(32);
+        tblTickets.setFillsViewportHeight(true);
+        tblTickets.setShowVerticalLines(false);
+        tblTickets.setGridColor(Color.decode("#828C9B"));
+        tblTickets.setForeground(Color.decode("#191A1C"));
         loadData();
 
         addTicketsButton.addActionListener(new ActionListener() {

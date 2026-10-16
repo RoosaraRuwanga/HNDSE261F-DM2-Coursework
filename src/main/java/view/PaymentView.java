@@ -1,13 +1,8 @@
 package view;
 
-import com.intellij.uiDesigner.core.GridConstraints;
-import com.intellij.uiDesigner.core.GridLayoutManager;
 import data.OracleConnector;
 import javax.swing.*;
-import javax.swing.plaf.FontUIResource;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.text.StyleContext;
-import java.awt.*;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
@@ -15,18 +10,25 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.util.Locale;
 
 public class PaymentView {
     private JButton btnAddPayment;
     private JTextField txtSearchPayments;
     private JTable tblPayments;
     private JPanel RootPanel;
+    private JButton btnRemovePayment;
+    private JLabel lblSearchPayments;
+    private JButton btnEditPayment;
 
     public PaymentView() {
         String[] columns = {"Payment ID", "Ticket ID", "Amount", "Payment Date"};
         DefaultTableModel model = new DefaultTableModel(columns, 0);
         tblPayments.setModel(model);
+        tblPayments.setRowHeight(32);
+        tblPayments.setFillsViewportHeight(true);
+        tblPayments.setShowVerticalLines(false);
+        tblPayments.setGridColor(java.awt.Color.decode("#828C9B"));
+        tblPayments.setForeground(java.awt.Color.decode("#191A1C"));
         loadData();
 
         btnAddPayment.addActionListener(new ActionListener() {
@@ -34,6 +36,28 @@ public class PaymentView {
             public void actionPerformed(ActionEvent e) {
                 AddPaymentDialog dialog = new AddPaymentDialog();
                 dialog.pack();
+                dialog.setVisible(true);
+                loadData();
+            }
+        });
+
+        btnRemovePayment.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                RemovePaymentDialog dialog = new RemovePaymentDialog();
+                dialog.pack();
+                dialog.setLocationRelativeTo(null);
+                dialog.setVisible(true);
+                loadData();
+            }
+        });
+
+        btnEditPayment.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                EditPaymentDialog dialog = new EditPaymentDialog();
+                dialog.pack();
+                dialog.setLocationRelativeTo(null);
                 dialog.setVisible(true);
                 loadData();
             }
@@ -64,8 +88,7 @@ public class PaymentView {
 
             if (!searchText.equals("")) {
                 sql = sql + " WHERE payment_id LIKE '%" + searchText + "%' " +
-                        " OR ticket_id LIKE '%" + searchText + "%' " +
-                        " OR amount LIKE '%" + searchText + "%'";
+                        " OR ticket_id LIKE '%" + searchText + "%' ";
             }
             rs = stmt.executeQuery(sql);
 
