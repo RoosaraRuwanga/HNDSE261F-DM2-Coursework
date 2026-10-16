@@ -34,6 +34,13 @@ public class PaymentView {
         btnAddPayment.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                if (!AddPaymentDialog.hasUnpaidTickets()) {
+                    JOptionPane.showMessageDialog(null,
+                            "No tickets found without a payment record.",
+                            "All Tickets Paid",
+                            JOptionPane.INFORMATION_MESSAGE);
+                    return;
+                }
                 AddPaymentDialog dialog = new AddPaymentDialog();
                 dialog.pack();
                 dialog.setVisible(true);

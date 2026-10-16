@@ -108,5 +108,20 @@ public class AddPaymentDialog extends JDialog {
         } catch (Exception e) {
         }
     }
+    public static boolean hasUnpaidTickets() {
+        String sql = "SELECT COUNT(*) FROM TICKET WHERE ticket_id NOT IN " +
+                "(SELECT ticket_id FROM PAYMENT WHERE ticket_id IS NOT NULL)";
+        try (Connection conn = OracleConnector.getConnection();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+
+            if (rs.next()) {
+                return rs.getInt(1) > 0;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 
 }
