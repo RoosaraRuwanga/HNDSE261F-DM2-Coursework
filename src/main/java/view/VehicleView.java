@@ -1,7 +1,5 @@
 package view;
 
-import com.intellij.uiDesigner.core.GridConstraints;
-import com.intellij.uiDesigner.core.GridLayoutManager;
 import controller.VehicleController;
 import controller.VehicleController.Vehicle;    // This lets you write just "Vehicle" which I spent 30mins on for this bugfix
 
@@ -23,6 +21,8 @@ public class VehicleView extends JPanel {
     private JLabel lblVManage;
     private JButton btnVehicleEdit;
     private JButton btnVehicleDel;
+    private JPanel searchPanel;
+    private JLabel lblSearch;
 
 
     private final VehicleController vehicleController = new VehicleController();

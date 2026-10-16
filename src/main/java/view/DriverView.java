@@ -23,6 +23,8 @@ public class DriverView extends JPanel {
     private JScrollPane TbleD;
     private JButton btnDriverEdit;
     private JButton btnDriverDel;
+    private JPanel searchPanel;
+    private JLabel lblSearch;
 
     //This will be used to form the connection with the Controller Class
     private final DriverController driverController = new DriverController();

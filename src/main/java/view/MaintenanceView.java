@@ -26,6 +26,8 @@ public class MaintenanceView extends JPanel {
     private JScrollPane TblM;
     private JButton btnMRecEdit;
     private JButton btnMRecDel;
+    private JPanel searchPanel;
+    private JLabel lblSearch;
 
     private final MaintenanceController maintenanceController = new MaintenanceController();
 
