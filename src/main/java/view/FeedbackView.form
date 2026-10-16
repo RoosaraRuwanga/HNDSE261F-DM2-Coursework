@@ -1,268 +1,136 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="view.FeedbackView">
-  <grid id="27dc6" binding="MainPanel" layout-manager="GridLayoutManager" row-count="13" column-count="5" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
-    <margin top="16" left="16" bottom="16" right="16"/>
+  <grid id="27dc6" binding="RootPanel" layout-manager="GridLayoutManager" row-count="2" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="12">
+    <margin top="24" left="32" bottom="24" right="32"/>
     <constraints>
-      <xy x="20" y="20" width="1200" height="633"/>
+      <xy x="20" y="20" width="736" height="480"/>
     </constraints>
     <properties>
       <background color="-7973"/>
     </properties>
     <border type="none"/>
     <children>
-      <vspacer id="99622">
+      <grid id="7dfa5" binding="headerPanel" layout-manager="GridLayoutManager" row-count="3" column-count="5" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+        <margin top="0" left="0" bottom="0" right="0"/>
         <constraints>
-          <grid row="6" column="1" row-span="2" col-span="2" vsize-policy="2" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
-        </constraints>
-      </vspacer>
-      <component id="bbb85" class="javax.swing.JLabel">
-        <constraints>
-          <grid row="1" column="0" row-span="1" col-span="3" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-        </constraints>
-        <properties>
-          <font name="Bahnschrift" size="18" style="1"/>
-          <foreground color="-12183780"/>
-          <text value="Feedback Submission"/>
-        </properties>
-      </component>
-      <component id="372b7" class="javax.swing.JButton" binding="btnSubmit">
-        <constraints>
-          <grid row="6" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="1" fill="1" indent="0" use-parent-layout="false">
-            <preferred-size width="276" height="34"/>
+          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="1" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false">
+            <preferred-size width="-1" height="40"/>
           </grid>
         </constraints>
         <properties>
-          <background color="-5425857"/>
-          <font name="Bahnschrift" size="14" style="1"/>
-          <foreground color="-7973"/>
-          <text value="Submit Feedback!"/>
+          <background color="-7973"/>
         </properties>
-      </component>
-      <component id="503c4" class="javax.swing.JLabel">
+        <border type="none"/>
+        <children>
+          <component id="f9988" class="javax.swing.JLabel">
+            <constraints>
+              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="5" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <font name="Bahnschrift" size="20" style="1"/>
+              <foreground color="-12183780"/>
+              <horizontalAlignment value="2"/>
+              <horizontalTextPosition value="0"/>
+              <text value="Feedback"/>
+            </properties>
+          </component>
+          <component id="100fc" class="javax.swing.JTextField" binding="txtSearch">
+            <constraints>
+              <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="7" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                <preferred-size width="150" height="-1"/>
+              </grid>
+            </constraints>
+            <properties/>
+          </component>
+          <component id="6ec6b" class="javax.swing.JComboBox" binding="cmbRoute">
+            <constraints>
+              <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                <minimum-size width="180" height="36"/>
+                <preferred-size width="180" height="36"/>
+              </grid>
+            </constraints>
+            <properties>
+              <name value="Route"/>
+              <toolTipText value="Route"/>
+            </properties>
+          </component>
+          <component id="cbc11" class="javax.swing.JComboBox" binding="cmbRating">
+            <constraints>
+              <grid row="2" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                <minimum-size width="140" height="36"/>
+                <preferred-size width="140" height="36"/>
+              </grid>
+            </constraints>
+            <properties>
+              <name value="Rating"/>
+            </properties>
+          </component>
+          <component id="84112" class="javax.swing.JButton" binding="btnSearch">
+            <constraints>
+              <grid row="2" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="1" indent="0" use-parent-layout="false">
+                <minimum-size width="110" height="36"/>
+                <preferred-size width="110" height="36"/>
+              </grid>
+            </constraints>
+            <properties>
+              <background color="-5425857"/>
+              <foreground color="-7973"/>
+              <text value="Search"/>
+            </properties>
+          </component>
+          <component id="eea56" class="javax.swing.JButton" binding="btnReset">
+            <constraints>
+              <grid row="2" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="1" indent="0" use-parent-layout="false">
+                <minimum-size width="110" height="36"/>
+                <preferred-size width="110" height="36"/>
+              </grid>
+            </constraints>
+            <properties>
+              <background color="-5425857"/>
+              <foreground color="-7973"/>
+              <text value="Reset"/>
+            </properties>
+          </component>
+          <component id="1fddb" class="javax.swing.JLabel" binding="Search">
+            <constraints>
+              <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <font name="Bahnschrift" size="14" style="1"/>
+              <foreground color="-12183780"/>
+              <text value="Search"/>
+            </properties>
+          </component>
+          <component id="97e6" class="javax.swing.JLabel" binding="Route">
+            <constraints>
+              <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <font name="Bahnschrift" size="14" style="1"/>
+              <foreground color="-12183780"/>
+              <text value="Route"/>
+            </properties>
+          </component>
+          <component id="ad2cd" class="javax.swing.JLabel" binding="Rating">
+            <constraints>
+              <grid row="1" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <font name="Bahnschrift" size="14" style="1"/>
+              <foreground color="-12183780"/>
+              <text value="Rating"/>
+            </properties>
+          </component>
+        </children>
+      </grid>
+      <scrollpane id="decfe">
         <constraints>
-          <grid row="2" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-        </constraints>
-        <properties>
-          <font name="Bahnschrift" size="16" style="0"/>
-          <foreground color="-12183780"/>
-          <labelFor value="51771"/>
-          <text value="Passenger ID"/>
-        </properties>
-      </component>
-      <component id="51771" class="javax.swing.JSpinner" binding="spnPID">
-        <constraints>
-          <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
-            <preferred-size width="276" height="34"/>
-          </grid>
-        </constraints>
-        <properties/>
-      </component>
-      <component id="3707e" class="javax.swing.JLabel">
-        <constraints>
-          <grid row="2" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false">
-            <preferred-size width="203" height="20"/>
-          </grid>
-        </constraints>
-        <properties>
-          <font name="Bahnschrift" size="16" style="0"/>
-          <foreground color="-12183780"/>
-          <labelFor value="57986"/>
-          <text value="Route ID"/>
-        </properties>
-      </component>
-      <component id="57986" class="javax.swing.JSpinner" binding="spnRID">
-        <constraints>
-          <grid row="3" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false">
-            <preferred-size width="203" height="34"/>
-          </grid>
-        </constraints>
-        <properties/>
-      </component>
-      <component id="b842b" class="javax.swing.JLabel">
-        <constraints>
-          <grid row="2" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-        </constraints>
-        <properties>
-          <font name="Bahnschrift" size="16" style="0"/>
-          <foreground color="-12183780"/>
-          <labelFor value="74368"/>
-          <text value="Vehicle ID"/>
-        </properties>
-      </component>
-      <component id="74368" class="javax.swing.JSpinner" binding="spnVID">
-        <constraints>
-          <grid row="3" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
-            <preferred-size width="276" height="34"/>
-          </grid>
-        </constraints>
-        <properties/>
-      </component>
-      <component id="b5cd1" class="javax.swing.JLabel">
-        <constraints>
-          <grid row="2" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-        </constraints>
-        <properties>
-          <font name="Bahnschrift" size="16" style="0"/>
-          <foreground color="-12183780"/>
-          <text value="Driver ID"/>
-        </properties>
-      </component>
-      <component id="dc49c" class="javax.swing.JSpinner" binding="spnDID">
-        <constraints>
-          <grid row="3" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
-            <preferred-size width="276" height="34"/>
-          </grid>
-        </constraints>
-        <properties/>
-      </component>
-      <component id="63afd" class="javax.swing.JLabel">
-        <constraints>
-          <grid row="4" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-        </constraints>
-        <properties>
-          <font name="Bahnschrift" size="16" style="0"/>
-          <foreground color="-12183780"/>
-          <labelFor value="6520f"/>
-          <text value="Rating ( 1-5 Stars )"/>
-        </properties>
-      </component>
-      <component id="6520f" class="javax.swing.JSpinner" binding="spnRating">
-        <constraints>
-          <grid row="5" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="1" fill="1" indent="0" use-parent-layout="false">
-            <preferred-size width="276" height="64"/>
-            <maximum-size width="-1" height="64"/>
-          </grid>
-        </constraints>
-        <properties/>
-      </component>
-      <component id="374aa" class="javax.swing.JLabel" binding="LabelTitle">
-        <constraints>
-          <grid row="0" column="2" row-span="1" col-span="3" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
-        </constraints>
-        <properties>
-          <font name="Bahnschrift" size="26" style="1"/>
-          <foreground color="-12183780"/>
-          <text value="FEEDBACK MENU"/>
-        </properties>
-      </component>
-      <component id="40882" class="javax.swing.JLabel">
-        <constraints>
-          <grid row="4" column="2" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-        </constraints>
-        <properties>
-          <font name="Bahnschrift" size="16" style="0"/>
-          <foreground color="-12183780"/>
-          <labelFor value="6520f"/>
-          <text value="Comment"/>
-        </properties>
-      </component>
-      <component id="8e553" class="javax.swing.JTextField" binding="txtComment">
-        <constraints>
-          <grid row="5" column="2" row-span="1" col-span="2" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
-            <preferred-size width="150" height="104"/>
-          </grid>
-        </constraints>
-        <properties/>
-      </component>
-      <component id="5bca7" class="javax.swing.JLabel">
-        <constraints>
-          <grid row="7" column="0" row-span="1" col-span="3" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-        </constraints>
-        <properties>
-          <font name="Bahnschrift" size="18" style="1"/>
-          <foreground color="-12183780"/>
-          <text value="View Feedback"/>
-        </properties>
-      </component>
-      <component id="41021" class="javax.swing.JTextField" binding="txtSearch">
-        <constraints>
-          <grid row="9" column="0" row-span="3" col-span="2" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
-            <preferred-size width="150" height="104"/>
-          </grid>
-        </constraints>
-        <properties>
-          <toolTipText value="Search Keyword"/>
-        </properties>
-      </component>
-      <component id="c33c7" class="javax.swing.JLabel">
-        <constraints>
-          <grid row="8" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-        </constraints>
-        <properties>
-          <font name="Bahnschrift" size="16" style="0"/>
-          <foreground color="-12183780"/>
-          <labelFor value="51771"/>
-          <text value="Search Keyword"/>
-        </properties>
-      </component>
-      <component id="dae3" class="javax.swing.JLabel">
-        <constraints>
-          <grid row="8" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false">
-            <preferred-size width="203" height="20"/>
-          </grid>
-        </constraints>
-        <properties>
-          <font name="Bahnschrift" size="16" style="0"/>
-          <foreground color="-12183780"/>
-          <labelFor value="57986"/>
-          <text value="Route ID"/>
-        </properties>
-      </component>
-      <component id="5645b" class="javax.swing.JSpinner" binding="spnRouteSearch">
-        <constraints>
-          <grid row="9" column="2" row-span="3" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false">
-            <preferred-size width="203" height="34"/>
-          </grid>
-        </constraints>
-        <properties/>
-      </component>
-      <component id="d083e" class="javax.swing.JButton" binding="btnSearch">
-        <constraints>
-          <grid row="9" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="1" fill="1" indent="0" use-parent-layout="false">
-            <preferred-size width="276" height="34"/>
-          </grid>
-        </constraints>
-        <properties>
-          <background color="-5425857"/>
-          <font name="Bahnschrift" size="14" style="1"/>
-          <foreground color="-7973"/>
-          <text value="Search"/>
-        </properties>
-      </component>
-      <component id="85521" class="javax.swing.JButton" binding="btnSortRoute">
-        <constraints>
-          <grid row="10" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="1" fill="1" indent="0" use-parent-layout="false">
-            <preferred-size width="276" height="34"/>
-          </grid>
-        </constraints>
-        <properties>
-          <background color="-5425857"/>
-          <font name="Bahnschrift" size="14" style="1"/>
-          <foreground color="-7973"/>
-          <text value="View by Route"/>
-        </properties>
-      </component>
-      <component id="22640" class="javax.swing.JButton" binding="btnSortHighest">
-        <constraints>
-          <grid row="11" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="1" fill="1" indent="0" use-parent-layout="false">
-            <preferred-size width="276" height="34"/>
-          </grid>
-        </constraints>
-        <properties>
-          <background color="-5425857"/>
-          <font name="Bahnschrift" size="14" style="1"/>
-          <foreground color="-7973"/>
-          <text value="View by Highest Rated"/>
-        </properties>
-      </component>
-      <scrollpane id="e9249" binding="scroll">
-        <constraints>
-          <grid row="12" column="0" row-span="1" col-span="5" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+          <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties/>
         <border type="none"/>
         <children>
-          <component id="a5ad6" class="javax.swing.JTable" binding="tblFeedback">
+          <component id="32bc5" class="javax.swing.JTable" binding="tbleFeedBack">
             <constraints/>
             <properties/>
           </component>

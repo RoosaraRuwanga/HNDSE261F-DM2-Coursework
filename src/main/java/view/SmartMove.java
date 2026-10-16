@@ -78,12 +78,9 @@ public class SmartMove {
                 reportView.getRootPanel(), reportView::refresh);
 
         // Feedback
+        // Feedback
         FeedbackView feedbackView = new FeedbackView();
-        JComponent feedbackPanel =
-                (JComponent) feedbackView.getContentPane();
-        feedbackView.dispose();
-
-        register(Feedbacks, "Feedback", feedbackPanel);
+        register(Feedbacks, "Feedback", feedbackView, feedbackView::refresh);
 
         // Show the Vehicles screen at startup
         vehicleView.refresh();

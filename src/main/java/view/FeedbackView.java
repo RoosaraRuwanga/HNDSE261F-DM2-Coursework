@@ -1,99 +1,124 @@
 package view;
 
-import com.intellij.uiDesigner.core.GridConstraints;
-import com.intellij.uiDesigner.core.GridLayoutManager;
-import com.intellij.uiDesigner.core.Spacer;
 import controller.FeedbackController;
-import javax.swing.*;
-import javax.swing.plaf.FontUIResource;
-import javax.swing.text.StyleContext;
-import java.awt.*;
-import java.sql.SQLException;
-import java.util.Locale;
+import controller.FeedbackController.RouteOption;
 
-public class FeedbackView extends JFrame {
-    private JPanel MainPanel;
-    private JLabel LabelTitle;
-    private JSpinner spnPID;
-    private JSpinner spnRID;
-    private JSpinner spnDID;
-    private JSpinner spnVID;
-    private JSpinner spnRating;
-    private JTextField txtComment;
-    private JButton btnSubmit;
+import javax.swing.*;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
+import java.awt.BorderLayout;
+import java.sql.SQLException;
+
+public class FeedbackView extends JPanel {
+
+    private JPanel RootPanel;
+    private JPanel headerPanel;
     private JTextField txtSearch;
-    private JSpinner spnRouteSearch;
+    private JComboBox<RouteOption> cmbRoute;
+    private JComboBox<String> cmbRating;
     private JButton btnSearch;
-    private JButton btnSortRoute;
-    private JButton btnSortHighest;
-    private JScrollPane scroll;
-    private JTable tblFeedback;
-    private FeedbackController feedbackService = new FeedbackController();
+    private JButton btnReset;
+    private JTable tbleFeedBack;
+    private JLabel Search;
+    private JLabel Route;
+    private JLabel Rating;
+
+    private final FeedbackController controller = new FeedbackController();
 
     public FeedbackView() {
-        setTitle("SmartMove Transport Solutions");
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setSize(1280, 720);
-        setContentPane(MainPanel);
-        setLocationRelativeTo(null);
-        //setVisible(true);
-
-
-        // force spinner to be 1 - 5 stars
-        spnRating.setValue(1);
-        spnRating.addChangeListener(e -> {
-            SpinnerNumberModel model = (SpinnerNumberModel) spnRating.getModel();
-            int rating = model.getNumber().intValue();
-
-            if (rating < 1) {
-                rating = 1;
-            } else if (rating > 5) {
-                rating = 5;
-            }
-            spnRating.setValue(rating);
-        });
-
-        btnSubmit.addActionListener(e -> {
+        // TEMPORARY: lists every field the form did not bind. Delete once nothing prints.
+        for (var f : FeedbackView.class.getDeclaredFields()) {
             try {
-                int passengerId = (int) spnPID.getValue();
-                int routeId = (int) spnRID.getValue();
-                int vehicleId = (int) spnVID.getValue();
-                int driverId = (int) spnDID.getValue();
-                int rating = (int) spnRating.getValue();
-                String comment = txtComment.getText().trim();
+                f.setAccessible(true);
+                if (f.get(this) == null) {
+                    System.out.println("UNBOUND: " + f.getName());
+                }
+            } catch (IllegalAccessException ignored) { }
+        }
 
-                feedbackService.submitFeedback(passengerId, routeId, vehicleId, driverId, rating, comment);
-                JOptionPane.showMessageDialog(this, "Feedback submitted successfully!");
-            } catch (NumberFormatException ex) {
-                JOptionPane.showMessageDialog(this, "Please enter valid numbers for ID/rating fields.");
-            } catch (IllegalArgumentException ex) {
-                JOptionPane.showMessageDialog(this, ex.getMessage());
-            } catch (SQLException ex) {
-                JOptionPane.showMessageDialog(this, "Error checking database: " + ex.getMessage());
-            }
-        });
-        btnSearch.addActionListener(e -> {
-            String keyword = txtSearch.getText().trim();
-            tblFeedback.setModel(feedbackService.searchFeedbackByKeyword(keyword));
-        });
+        setLayout(new BorderLayout());
+        add(RootPanel, BorderLayout.CENTER);
 
-        btnSortRoute.addActionListener(e -> {
-            try {
-                int routeId = (int) spnRouteSearch.getValue();
-                tblFeedback.setModel(feedbackService.getFeedbackByRoute(routeId));
-            } catch (NumberFormatException ex) {
-                JOptionPane.showMessageDialog(this, "Please enter a valid numeric Route ID.");
+        // table setup
+        tbleFeedBack.setRowHeight(32);
+        tbleFeedBack.setFillsViewportHeight(true);
+        tbleFeedBack.setAutoCreateRowSorter(true); // click a header to sort
+
+        // show the rating column as stars, same as the passenger form
+        tbleFeedBack.setDefaultRenderer(Integer.class, new DefaultTableCellRenderer() {
+            @Override
+            protected void setValue(Object value) {
+                int r = value instanceof Number ? ((Number) value).intValue() : 0;
+                setText("\u2605".repeat(r) + "\u2606".repeat(Math.max(0, 5 - r)));
             }
         });
 
-        btnSortHighest.addActionListener(e -> {
-            tblFeedback.setModel(feedbackService.getHighestRated());
+        cmbRating.setModel(new DefaultComboBoxModel<>(
+                new String[]{"All ratings", "5", "4", "3", "2", "1"}));
+        loadRoutes();
+
+        // events
+        btnSearch.addActionListener(e -> refresh());
+        txtSearch.addActionListener(e -> refresh());
+        btnReset.addActionListener(e -> {
+            txtSearch.setText("");
+            cmbRoute.setSelectedIndex(0);
+            cmbRating.setSelectedIndex(0);
+            refresh();
         });
 
+        refresh();
     }
 
-    public static void main(String[] args) {
-        new FeedbackView();
+    // Reload the table from MongoDB, applying the filters
+    public void refresh() {
+        RouteOption route = (RouteOption) cmbRoute.getSelectedItem();
+        int routeId = route == null ? 0 : route.id;
+        int rating = cmbRating.getSelectedIndex() <= 0
+                ? 0
+                : Integer.parseInt((String) cmbRating.getSelectedItem());
+
+        try {
+            DefaultTableModel model =
+                    controller.getFeedback(txtSearch.getText(), routeId, rating);
+            tbleFeedBack.setModel(model);
+            setColumnWidths();
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Could not load feedback:\n" + ex.getMessage(),
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE
+            );
+        }
     }
 
+    private void loadRoutes() {
+        try {
+            DefaultComboBoxModel<RouteOption> model = new DefaultComboBoxModel<>();
+            model.addElement(RouteOption.ALL);
+            for (RouteOption r : controller.getRouteOptions()) {
+                model.addElement(r);
+            }
+            cmbRoute.setModel(model);
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Could not load routes:\n" + ex.getMessage(),
+                    "Database Error",
+                    JOptionPane.ERROR_MESSAGE
+            );
+        }
+    }
+
+    private void setColumnWidths() {
+        int[] widths = {130, 120, 170, 150, 120, 90, 400};
+        for (int i = 0; i < widths.length && i < tbleFeedBack.getColumnCount(); i++) {
+            tbleFeedBack.getColumnModel().getColumn(i).setPreferredWidth(widths[i]);
+        }
+    }
+
+    public JPanel getRootPanel() {
+        return RootPanel;
+    }
 }

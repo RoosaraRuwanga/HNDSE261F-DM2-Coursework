@@ -1,85 +1,150 @@
 package controller;
-import com.mongodb.client.*;
+
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.model.Filters;
+import com.mongodb.client.model.Sorts;
 import data.MongoConnector;
 import data.OracleConnector;
 import org.bson.Document;
-import javax.swing.table.DefaultTableModel;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
+import org.bson.conversions.Bson;
+import org.bson.types.ObjectId;
 
+import javax.swing.table.DefaultTableModel;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.regex.Pattern;
 
 public class FeedbackController {
 
-    public void submitFeedback(int passengerId, int routeId, int vehicleId, int driverId, int rating, String comment) throws SQLException {
-        MongoCollection<Document> collection = MongoConnector.getDatabase().getCollection("feedback");
+    public static final String[] COLUMNS =
+            {"Date", "Passenger", "Route", "Vehicle", "Driver", "Rating", "Comment"};
 
-        // safety check
-        if (!OracleConnector.value_exists("Passenger", "passenger_id", passengerId)) {
-            throw new IllegalArgumentException("Passenger ID " + passengerId + " does not exist.");
-        }
-        if (!OracleConnector.value_exists("Route", "route_id", routeId)) {
-            throw new IllegalArgumentException("Route ID " + routeId + " does not exist.");
-        }
-        if (!OracleConnector.value_exists("Vehicle", "vehicle_id", vehicleId)) {
-            throw new IllegalArgumentException("Vehicle ID " + vehicleId + " does not exist.");
-        }
-        if (!OracleConnector.value_exists("Driver", "driver_id", driverId)) {
-            throw new IllegalArgumentException("Driver ID " + driverId + " does not exist.");
+    // Item for the route dropdown
+    public static class RouteOption {
+        public static final RouteOption ALL = new RouteOption(0, "All routes");
+
+        public final int id;
+        private final String label;
+
+        public RouteOption(int id, String label) {
+            this.id = id;
+            this.label = label;
         }
 
-
-        // probably should space this out more later like i do for my hobby stuff, i just want this to work first of all
-        Document feedback =
-                new Document("passenger_id", passengerId).append("route_id", routeId).append("vehicle_id", vehicleId)
-                .append("driver_id", driverId).append("rating", rating).append("comment", comment);
-
-        collection.insertOne(feedback);
+        @Override
+        public String toString() {
+            return label;
+        }
     }
 
-    public DefaultTableModel getFeedbackByRoute(int routeId) {
-        DefaultTableModel model = new DefaultTableModel(new String[]{"Passenger ID", "Rating", "Comment"}, 0);
+    // Routes for the dropdown
+    public List<RouteOption> getRouteOptions() throws SQLException {
+        List<RouteOption> list = new ArrayList<>();
+        Map<Integer, String> routes = lookup(
+                "SELECT route_id, start_location || ' - ' || destination FROM ROUTE ORDER BY route_id");
+        for (Map.Entry<Integer, String> e : routes.entrySet()) {
+            list.add(new RouteOption(e.getKey(), e.getValue()));
+        }
+        list.sort((a, b) -> Integer.compare(a.id, b.id));
+        return list;
+    }
 
-        MongoCollection<Document> collection = MongoConnector.getDatabase().getCollection("feedback");
-        FindIterable<Document> results = collection.find(new Document("route_id", routeId));
+    // Feedback table. routeId 0 = all routes, rating 0 = all ratings.
+    public DefaultTableModel getFeedback(String keyword, int routeId, int rating)
+            throws SQLException {
 
-        for (Document doc : results) {
-            model.addRow(new Object[]{doc.getInteger("passenger_id"), doc.getInteger("rating"),
-                    doc.getString("comment")});
+        DefaultTableModel model = new DefaultTableModel(COLUMNS, 0) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false; // admins cannot change a passenger's response
+            }
+
+            @Override
+            public Class<?> getColumnClass(int column) {
+                return column == 5 ? Integer.class : String.class;
+            }
+        };
+
+        // names come from Oracle, feedback comes from MongoDB
+        Map<Integer, String> passengers = lookup(
+                "SELECT passenger_id, passenger_name FROM PASSENGER");
+        Map<Integer, String> routes = lookup(
+                "SELECT route_id, start_location || ' - ' || destination FROM ROUTE");
+        Map<Integer, String> vehicles = lookup(
+                "SELECT vehicle_id, vehicle_type || ' ' || license_number FROM VEHICLE");
+        Map<Integer, String> drivers = lookup(
+                "SELECT driver_id, driver_name FROM DRIVER");
+
+        List<Bson> filters = new ArrayList<>();
+        if (keyword != null && !keyword.isBlank()) {
+            filters.add(Filters.regex("comment", Pattern.quote(keyword.trim()), "i"));
+        }
+        if (routeId > 0) {
+            // also matches older documents saved with camelCase names
+            filters.add(Filters.or(
+                    Filters.eq("route_id", routeId),
+                    Filters.eq("routeId", routeId)));
+        }
+        if (rating > 0) {
+            filters.add(Filters.eq("rating", rating));
+        }
+        Bson query = filters.isEmpty() ? new Document() : Filters.and(filters);
+
+        MongoCollection<Document> collection =
+                MongoConnector.getDatabase().getCollection("feedback");
+        SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+
+        // newest first (an ObjectId starts with its creation time)
+        for (Document doc : collection.find(query).sort(Sorts.descending("_id"))) {
+            Object id = doc.get("_id");
+            String date = id instanceof ObjectId ? fmt.format(((ObjectId) id).getDate()) : "";
+
+            model.addRow(new Object[]{
+                    date,
+                    label(passengers, num(doc, "passenger_id", "passengerId")),
+                    label(routes, num(doc, "route_id", "routeId")),
+                    label(vehicles, num(doc, "vehicle_id", "vehicleId")),
+                    label(drivers, num(doc, "driver_id", "driverId")),
+                    num(doc, "rating"),
+                    doc.getString("comment") == null ? "" : doc.getString("comment")
+            });
         }
         return model;
     }
 
-    public DefaultTableModel searchFeedbackByKeyword(String keyword) {
-        DefaultTableModel model = new DefaultTableModel(
-                new String[]{"Passenger ID", "Route ID", "Rating", "Comment"}, 0);
+    // ---- helpers ----
 
-        // using regex again because no clue how else to search strings like outlined in the doc
-        MongoCollection<Document> collection = MongoConnector.getDatabase().getCollection("feedback");
-        Document regexQuery = new Document("comment", new Document("$regex", keyword).append("$options", "i"));
-
-        FindIterable<Document> results = collection.find(regexQuery);
-
-        for (Document doc : results) {
-            model.addRow(new Object[]{doc.getInteger("passenger_id"), doc.getInteger("route_id"),
-                    doc.getInteger("rating"), doc.getString("comment")});
+    // reads the first key that exists (supports snake_case and camelCase documents)
+    private static int num(Document doc, String... keys) {
+        for (String key : keys) {
+            Object value = doc.get(key);
+            if (value instanceof Number) {
+                return ((Number) value).intValue();
+            }
         }
-        return model;
+        return 0;
     }
 
-    public DefaultTableModel getHighestRated() {
-        DefaultTableModel model = new DefaultTableModel(new String[]{"Vehicle ID", "Average Rating"}, 0);
+    private static String label(Map<Integer, String> map, int id) {
+        return map.getOrDefault(id, "#" + id);
+    }
 
-        MongoCollection<Document> collection = MongoConnector.getDatabase().getCollection("feedback");
-
-        List<Document> results = List.of(
-                new Document("$group", new Document("_id", "$vehicle_id").append("avgRating", new Document("$avg", "$rating"))),
-                new Document("$sort", new Document("avgRating", -1))
-        );
-
-        for (Document doc : collection.aggregate(results)) {
-            model.addRow(new Object[]{doc.getInteger("_id"), doc.getDouble("avgRating")});
+    private Map<Integer, String> lookup(String sql) throws SQLException {
+        Map<Integer, String> map = new HashMap<>();
+        try (Connection con = OracleConnector.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                map.put(rs.getInt(1), rs.getString(2));
+            }
         }
-        return model;
+        return map;
     }
 }
