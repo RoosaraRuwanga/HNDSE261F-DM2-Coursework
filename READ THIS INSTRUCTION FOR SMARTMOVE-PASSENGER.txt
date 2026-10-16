@@ -1,0 +1,51 @@
+SmartMove passenger feedback web app: how to run
+
+BEFORE YOU START
+- Node.js installed (check with: node -v)
+- Oracle running (user SYSTEM, 127.0.0.1:1521, SID XE)
+- MongoDB running on localhost:27017 (database "smartmove", collection "feedback")
+
+1. GET THE LATEST CODE
+   Already have the project cloned? Open a terminal in that project folder and run:
+       git pull
+
+   Don't have it yet? Clone it (this creates a folder called HNDSE261F-DM2-Coursework):
+       git clone https://github.com/RoosaraRuwanga/HNDSE261F-DM2-Coursework.git
+       cd HNDSE261F-DM2-Coursework
+
+   In IntelliJ: reload Maven (pom.xml changed), then Build > Rebuild Project.
+
+2. CHECK YOUR ORACLE PASSWORD
+   Open smartmove-passenger\backend\.env
+   Set ORACLE_PASSWORD to YOUR Oracle SYSTEM password (we used 274123).
+   Don't commit your change to .env.
+
+3. START THE BACKEND (terminal 1, from the project folder)
+   cd smartmove-passenger\backend
+   node server.js
+   You should see: API running on http://localhost:3000
+   Test it: open http://localhost:3000/api/routes (it should show JSON).
+
+4. START THE WEBSITE (terminal 2, from the project folder)
+   cd smartmove-passenger\frontend
+   npm run dev
+   Open the address it prints (http://localhost:5173, or 5174 if 5173 is busy).
+
+5. TRY IT
+   - Fill in the form: Passenger ID 1 to 4, a route, vehicle, driver, star rating, comment, then Submit.
+   - Open the Java app > Feedbacks > click Search. The new feedback is at the top.
+
+HOW THEY CONNECT
+- Passengers submit on the website. The backend saves to MongoDB (smartmove.feedback).
+- The Java admin app reads the same collection, so it appears there. Admins can't edit it.
+- The route, vehicle and driver dropdowns on the website come from Oracle.
+
+IF SOMETHING GOES WRONG
+- "running scripts is disabled" in PowerShell:
+  Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy RemoteSigned
+  (then open a new terminal)
+- ORA-01017 at /api/routes: wrong password in backend\.env. Fix it and restart the backend.
+- "MongoDB connection failed": start MongoDB.
+- Dropdowns on the website are empty: the backend isn't running, so start it and refresh the page.
+- Cannot find module (on a Mac/Linux PC): run "npm install" in both backend and frontend.
+- Changes to .env or server.js need a backend restart (Ctrl+C, then node server.js).
