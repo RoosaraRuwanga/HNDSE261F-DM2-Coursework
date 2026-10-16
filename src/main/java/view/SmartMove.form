@@ -146,8 +146,8 @@
               <enabled value="true"/>
               <focusable value="false"/>
               <foreground color="-7973"/>
-              <label value="Passenegers"/>
-              <text value="Passenegers"/>
+              <label value="Passengers"/>
+              <text value="Passengers"/>
             </properties>
           </component>
           <component id="a5ee7" class="javax.swing.JButton" binding="Tickets">
