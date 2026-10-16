@@ -8,13 +8,10 @@ import controller.VehicleController.Vehicle;    // This lets you write just "Veh
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import javax.swing.plaf.FontUIResource;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.text.StyleContext;
 import java.awt.*;
 import java.util.List;
 import java.sql.SQLException;
-import java.util.Locale;
 
 public class VehicleView extends JPanel {
     private JPanel RootPanelV;
@@ -24,7 +21,8 @@ public class VehicleView extends JPanel {
     private JTextField SearchBoxV;
     private JTable table1;
     private JLabel lblVManage;
-    private JScrollPane TblV;
+    private JButton btnVehicleEdit;
+    private JButton btnVehicleDel;
 
 
     private final VehicleController vehicleController = new VehicleController();

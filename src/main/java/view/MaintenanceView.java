@@ -24,6 +24,8 @@ public class MaintenanceView extends JPanel {
     private JTextField SearchBoxM;
     private JTable table1;
     private JScrollPane TblM;
+    private JButton btnMRecEdit;
+    private JButton btnMRecDel;
 
     private final MaintenanceController maintenanceController = new MaintenanceController();
 
