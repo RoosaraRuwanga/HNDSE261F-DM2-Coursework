@@ -138,17 +138,26 @@ public class PassengerView extends JPanel {
         AddPassengerDialog dialog = new AddPassengerDialog(SwingUtilities.getWindowAncestor(this));
         dialog.setVisible(true);
         if (!dialog.isConfirmed()) return;
+        String sql = "INSERT INTO PASSENGER (passenger_id, passenger_name, contact) " +
+                "VALUES (passenger_seq.NEXTVAL, ?, ?)";
 
-        int nextId = 1;
-        for (int i = 0; i < model.getRowCount(); i++) {
-            nextId = Math.max(nextId, (Integer) model.getValueAt(i, 0) + 1);
-        }
-        for (Object[] r : localRows) {
-            nextId = Math.max(nextId, (Integer) r[0] + 1);
-        }
+        try (Connection con = OracleConnector.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
 
-        localRows.add(new Object[]{nextId, dialog.getPassengerName(), dialog.getContact(), 0});
-        refresh();
+            ps.setString(1, dialog.getPassengerName());
+            ps.setString(2, dialog.getContact());
+
+            int inserted = ps.executeUpdate();
+            if (inserted > 0) {
+                JOptionPane.showMessageDialog(this, "New passenger added to database successfully!");
+                refresh();
+            }
+
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(this,
+                    "Could not save passenger to database:\n" + ex.getMessage(),
+                    "Database error", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
 

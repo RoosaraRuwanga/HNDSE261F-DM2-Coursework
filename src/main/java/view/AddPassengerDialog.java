@@ -29,8 +29,8 @@ public class AddPassengerDialog extends JDialog {
 
         setContentPane(rootPanel);
 
-        txtTickets.setText("0");
-        txtTickets.setEditable(true);
+        if (lblTickets != null) lblTickets.setVisible(false);
+        if (txtTickets != null) txtTickets.setVisible(false);
 
         addButton.addActionListener(e -> onAdd());
         cancelButton.addActionListener(e -> dispose());
@@ -62,10 +62,6 @@ public class AddPassengerDialog extends JDialog {
 
         txtName.setText(name);
         txtContact.setText(contact);
-        txtTickets.setText(String.valueOf(tickets));
-
-        lblTickets.setVisible(true);
-        txtTickets.setVisible(true);
 
         pack();
         setLocationRelativeTo(owner);
@@ -78,25 +74,6 @@ public class AddPassengerDialog extends JDialog {
             JOptionPane.showMessageDialog(
                     this,
                     "Name and contact are required."
-            );
-            return;
-        }
-
-        try {
-            int tickets = Integer.parseInt(txtTickets.getText().trim());
-
-            if (tickets < 0) {
-                JOptionPane.showMessageDialog(
-                        this,
-                        "Tickets cannot be negative."
-                );
-                return;
-            }
-
-        } catch (NumberFormatException ex) {
-            JOptionPane.showMessageDialog(
-                    this,
-                    "Enter a valid ticket count."
             );
             return;
         }
@@ -118,7 +95,7 @@ public class AddPassengerDialog extends JDialog {
     }
 
     public int getTickets() {
-        return Integer.parseInt(txtTickets.getText().trim());
+        return 0;
     }
 
 }
