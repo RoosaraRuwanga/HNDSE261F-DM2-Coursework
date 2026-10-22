@@ -49,6 +49,8 @@ public class VehicleView extends JPanel {
         table1.setForeground(Color.decode("#191A1C"));
 
         btnVehicleAdd.addActionListener(e -> openDialog());
+        btnVehicleEdit.addActionListener(e -> openEditDialog());
+        btnVehicleDel.addActionListener(e -> openDeleteDialog());
 
         //All string is stored in a document and this form fetches allat info and documentlistener catches any changes
         SearchBoxV.getDocument().addDocumentListener(new DocumentListener() {
@@ -126,4 +128,43 @@ public class VehicleView extends JPanel {
         return RootPanelV;
     }
 
+    // Builds a Vehicle from the highlighted table row (null if nothing is selected)
+    private Vehicle getSelectedVehicle() {
+        int row = table1.getSelectedRow();
+        if (row == -1) {
+            JOptionPane.showMessageDialog(this, "Please select a vehicle first.");
+            return null;
+        }
+        return new Vehicle(
+                (int) model.getValueAt(row, 0),
+                (String) model.getValueAt(row, 1),
+                (String) model.getValueAt(row, 2),
+                (int) model.getValueAt(row, 3),
+                (String) model.getValueAt(row, 4)
+        );
+    }
+
+    private void openEditDialog() {
+        Vehicle vehicle = getSelectedVehicle();
+        if (vehicle == null) return;
+
+        EditVehicle dialog = new EditVehicle(SwingUtilities.getWindowAncestor(this), vehicle);
+        dialog.setVisible(true);
+
+        if (dialog.isSaved()) {
+            refresh();
+        }
+    }
+
+    private void openDeleteDialog() {
+        Vehicle vehicle = getSelectedVehicle();
+        if (vehicle == null) return;
+
+        DeleteVehicle dialog = new DeleteVehicle(SwingUtilities.getWindowAncestor(this), vehicle);
+        dialog.setVisible(true);
+
+        if (dialog.isDeleted()) {
+            refresh();
+        }
+    }
 }

@@ -111,4 +111,57 @@ public class VehicleController {
             ps.executeUpdate();
         }
     }
+
+    public void updateVehicle(int id, String type, String license, int seats, String status)
+            throws SQLException {
+        if (type == null || type.trim().isEmpty()) {
+            throw new IllegalArgumentException("Vehicle type is required.");
+        }
+        if (license == null || license.trim().isEmpty()) {
+            throw new IllegalArgumentException("License number is required.");
+        }
+        if (seats < 0) {
+            throw new IllegalArgumentException("Available seats cannot be negative.");
+        }
+
+        String sql = "UPDATE VEHICLE SET vehicle_type = ?, license_number = ?, "
+                + "available_seats = ?, status = ? WHERE vehicle_id = ?";
+
+        try (Connection con = OracleConnector.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setString(1, type.trim());
+            ps.setString(2, license.trim());
+            ps.setInt(3, seats);
+            ps.setString(4, status);
+            ps.setInt(5, id);
+
+            if (ps.executeUpdate() == 0) {
+                throw new IllegalArgumentException("This vehicle no longer exists.");
+            }
+        }
+    }
+
+    public void deleteVehicle(int id) throws SQLException {
+        String sql = "DELETE FROM VEHICLE WHERE vehicle_id = ?";
+
+        try (Connection con = OracleConnector.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setInt(1, id);
+
+            if (ps.executeUpdate() == 0) {
+                throw new IllegalArgumentException("This vehicle no longer exists.");
+            }
+
+        } catch (SQLException ex) {
+            // ORA-02292: the vehicle is used by a TRIP or a MAINTENANCE record
+            if (ex.getErrorCode() == 2292) {
+                throw new IllegalArgumentException(
+                        "This vehicle is used by trips or maintenance records and cannot be deleted.\n"
+                                + "Set its status to Inactive instead.");
+            }
+            throw ex;
+        }
+    }
 }

@@ -120,6 +120,7 @@
             </constraints>
             <properties>
               <background color="-266"/>
+              <editable value="false"/>
             </properties>
           </component>
         </children>
