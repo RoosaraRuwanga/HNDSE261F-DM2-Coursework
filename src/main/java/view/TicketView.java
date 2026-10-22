@@ -42,6 +42,7 @@ public class TicketView {
             public void actionPerformed(ActionEvent e) {
                 AddTicketDialog dialog = new AddTicketDialog();
                 dialog.pack();
+                dialog.setLocationRelativeTo(null);
                 dialog.setVisible(true);
                 loadData();
             }

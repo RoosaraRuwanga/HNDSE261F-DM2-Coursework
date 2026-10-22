@@ -59,6 +59,7 @@ public class TripView extends JPanel {
             public void actionPerformed(java.awt.event.ActionEvent e) {
                 EditTripDialog dialog = new EditTripDialog();
                 dialog.pack();
+                dialog.setLocationRelativeTo(SwingUtilities.getWindowAncestor(TripView.this));
                 dialog.setVisible(true);
                 refresh();
             }
@@ -69,6 +70,7 @@ public class TripView extends JPanel {
             public void actionPerformed(java.awt.event.ActionEvent e) {
                 DeleteTripDialog dialog = new DeleteTripDialog();
                 dialog.pack();
+                dialog.setLocationRelativeTo(SwingUtilities.getWindowAncestor(TripView.this));
                 dialog.setVisible(true);
                 refresh();
             }

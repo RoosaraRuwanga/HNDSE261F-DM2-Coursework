@@ -43,6 +43,7 @@ public class PaymentView {
                 }
                 AddPaymentDialog dialog = new AddPaymentDialog();
                 dialog.pack();
+                dialog.setLocationRelativeTo(null);
                 dialog.setVisible(true);
                 loadData();
             }
