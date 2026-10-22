@@ -74,6 +74,7 @@ public class PassengerView extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 EditPassengerDialog dialog = new EditPassengerDialog();
                 dialog.pack();
+                dialog.setLocationRelativeTo(SwingUtilities.getWindowAncestor(PassengerView.this));
                 dialog.setVisible(true);
                 refresh();
             }
@@ -84,6 +85,7 @@ public class PassengerView extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 RemovePassengerDialog dialog = new RemovePassengerDialog();
                 dialog.pack();
+                dialog.setLocationRelativeTo(SwingUtilities.getWindowAncestor(PassengerView.this));
                 dialog.setVisible(true);
                 refresh();
             }

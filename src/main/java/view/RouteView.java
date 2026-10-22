@@ -60,6 +60,7 @@ public class RouteView extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 EditRoute dialog = new EditRoute();
                 dialog.pack();
+                dialog.setLocationRelativeTo(SwingUtilities.getWindowAncestor(RouteView.this));
                 dialog.setVisible(true);
                 refresh();
             }
@@ -70,6 +71,7 @@ public class RouteView extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 DeleteRoute dialog = new DeleteRoute();
                 dialog.pack();
+                dialog.setLocationRelativeTo(SwingUtilities.getWindowAncestor(RouteView.this));
                 dialog.setVisible(true);
                 refresh();
             }
